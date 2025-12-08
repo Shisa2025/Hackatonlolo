@@ -10,7 +10,6 @@ const axios = require("axios");
 
 const app = express();
 
-// Parse incoming JSON requests
 app.use(bodyParser.json());
 
 // Serve static frontend files (e.g., chat.html inside "public" folder)
