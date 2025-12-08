@@ -1,42 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Welcome, lolo</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <main class="fancy-container">
-            <div class="hero">
-                <h1 class="neon">XXX</h1>
-                <p class="lead">X</p>
-                <div class="actions">
-                    <a class="btn btn-neon" href="#">Primary</a>
-                    <a class="btn btn-outline" href="chatbot.html">Go to Chatbot</a>
-                </div>
-            </div>
-
-            <section class="cards">
-                <article class="card">
-                    <h3>Interaction card</h3>
-                    <p>Shade</p>
-                </article>
-                <article class="card">
-                    <h3>Dynamic</h3>
-                    <p>Key frame</p>
-                </article>
-                <article class="card">
-                    <h3>Changing frame</h3>
-                    <p>conic-gradient/p>
-                </article>
-            </section>
-
-            <div class="shapes">
-                <div class="shape s1"></div>
-                <div class="shape s2"></div>
-                <div class="shape s3"></div>
-            </div>
-        </main>
-    </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>Kaiju Response Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 gap-6">
+  <div class="text-center space-y-3 max-w-xl">
+    <div class="text-xs uppercase tracking-[0.2em] text-slate-400">Kaiju Response Hub</div>
+    <div class="text-3xl font-bold">Choose a console</div>
+    <p class="text-slate-300">Dashboard shows live incidents and telemetry. Countermeasures summarizes per-kaiju actions and operational directives.</p>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
+    <a href="dashboard.html" class="block p-5 rounded-2xl border border-red-500/40 bg-red-500/10 hover:bg-red-500/15 transition shadow-xl">
+      <div class="text-sm uppercase tracking-[0.14em] text-red-200 mb-1">Live Dashboard</div>
+      <div class="text-xl font-semibold">Kaiju Crisis Console</div>
+      <p class="text-sm text-red-100/80 mt-2">Monitor incidents, locations, radiation, and field ops feed.</p>
+    </a>
+    <a href="countermeasures.html" class="block p-5 rounded-2xl border border-amber-400/40 bg-amber-500/10 hover:bg-amber-500/15 transition shadow-xl">
+      <div class="text-sm uppercase tracking-[0.14em] text-amber-200 mb-1">Playbook</div>
+      <div class="text-xl font-semibold">Countermeasure Briefing</div>
+      <p class="text-sm text-amber-100/80 mt-2">Per-kaiju actions and operational directives at a glance.</p>
+    </a>
+    <a href="synopsis.html" class="block p-5 rounded-2xl border border-emerald-400/40 bg-emerald-500/10 hover:bg-emerald-500/15 transition shadow-xl">
+      <div class="text-sm uppercase tracking-[0.14em] text-emerald-200 mb-1">Synopsis</div>
+      <div class="text-xl font-semibold">Mission Overview + BGM</div>
+      <p class="text-sm text-emerald-100/80 mt-2">Read the condensed briefing and launch the background score.</p>
+    </a>
+  </div>
+</body>
 </html>

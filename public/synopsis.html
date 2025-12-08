@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kaiju Response Synopsis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 flex flex-col">
+  <header class="border-b border-emerald-400/40 bg-emerald-500/10 shadow-xl px-4 sm:px-6 py-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <div class="text-xs uppercase tracking-[0.2em] text-emerald-200">Kaiju Response Hub</div>
+        <div class="text-xl font-bold">Mission Synopsis & BGM</div>
+        <div class="text-sm text-emerald-100/80">Condensed narrative plus soundtrack control</div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-end">
+        <a href="index.html" class="text-sm px-3 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition">Home</a>
+        <a href="dashboard.html" class="text-sm px-3 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition">Dashboard</a>
+        <a href="countermeasures.html" class="text-sm px-3 py-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition">Countermeasures</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 p-4 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-4">
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-baseline justify-between gap-2 flex-wrap">
+        <div>
+          <div class="text-xs uppercase tracking-[0.16em] text-slate-300">Narrative Brief</div>
+          <div class="text-2xl font-extrabold tracking-tight">Operation Yashima</div>
+        </div>
+        <div class="text-[0.78rem] px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-100">Status: Demo</div>
+      </div>
+      <p class="text-slate-200 text-sm leading-relaxed">A coordinated response unfolds as multiple kaiju signatures appear across the Kanto region. The following synopsis captures the intent behind the current playbook and the emotional beat that the BGM underscores.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <div class="rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-inner space-y-2">
+          <div class="text-xs uppercase tracking-[0.12em] text-slate-400">Objectives</div>
+          <ul class="list-disc pl-4 space-y-1 text-slate-200">
+            <li>Protect evacuation lanes L3/L4 while naval units shadow Godzilla's approach.</li>
+            <li>Maintain grid stability against Ghidorah-induced surges and EM bursts.</li>
+            <li>Preserve civic morale with continuous public broadcasts and drills.</li>
+          </ul>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-inner space-y-2">
+          <div class="text-xs uppercase tracking-[0.12em] text-slate-400">Atmosphere</div>
+          <ul class="list-disc pl-4 space-y-1 text-slate-200">
+            <li>Red floodlights over port defenses; radio chatter loops evacuation codes.</li>
+            <li>Storm clouds coil above the bay, tracing Ghidorah's gravity wake.</li>
+            <li>The score pulses steadily, mirroring teams holding position under pressure.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-inner space-y-2">
+        <div class="text-xs uppercase tracking-[0.12em] text-slate-400">Timeline Snapshot</div>
+        <ol class="list-decimal pl-5 space-y-1 text-slate-200">
+          <li>Briefing issued; coastal artillery on standby; drones chart undersea movement.</li>
+          <li>Ghidorah’s EM waves spike; grid operators re-route power around faulted nodes.</li>
+          <li>Mothra sighted near shrines; protective classification evaluated to reduce conflict.</li>
+          <li>Combined strike authorization pending; Yashima soundtrack cues synchronized launch.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-baseline justify-between gap-2 flex-wrap">
+        <div>
+          <div class="text-xs uppercase tracking-[0.16em] text-slate-300">Soundtrack Control</div>
+          <div class="text-lg font-semibold text-emerald-100">"yashimasakusen.MP3"</div>
+        </div>
+        <div class="text-[0.78rem] px-3 py-1 rounded-full bg-white/10 border border-white/20 text-slate-200">Loop enabled</div>
+      </div>
+      <div class="rounded-xl border border-emerald-400/40 bg-emerald-500/10 p-4 shadow-inner space-y-3">
+        <audio id="bgm" src="bgm/yashimasakusen.MP3" preload="auto" loop></audio>
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="toggle-bgm" class="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-semibold shadow-lg hover:translate-y-[-1px] transition">Play BGM</button>
+          <button id="stop-bgm" class="px-4 py-2 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-sm">Stop</button>
+          <div id="bgm-status" class="text-sm text-emerald-100">Ready. Click Play to start the score.</div>
+        </div>
+        <p class="text-xs text-emerald-50/80">Note: Some browsers require a click before audio playback begins. Volume is set to 70%.</p>
+      </div>
+      <div class="rounded-xl border border-white/10 bg-slate-900/70 p-4 shadow-inner space-y-2 text-sm text-slate-200">
+        <div class="text-xs uppercase tracking-[0.12em] text-slate-400">Listening Pointers</div>
+        <ul class="list-disc pl-4 space-y-1">
+          <li>Let the loop run while reading the briefing to mirror the operation’s pacing.</li>
+          <li>Pair with the dashboard for a synced, immersive control-room vibe.</li>
+          <li>Pause when switching to live countermeasure editing to keep focus.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-[0.78rem] text-slate-400 border-t border-white/10 px-4 py-3 text-right bg-slate-950/80">&copy; 2025 National Kaiju Response Agency (Demo) | Synopsis + BGM</footer>
+
+  <script>
+    const audio = document.getElementById("bgm");
+    const toggleBtn = document.getElementById("toggle-bgm");
+    const stopBtn = document.getElementById("stop-bgm");
+    const status = document.getElementById("bgm-status");
+
+    audio.volume = 0.7;
+
+    function updateStatus() {
+      if (audio.paused) {
+        status.textContent = "Paused. Click Play to resume the loop.";
+        toggleBtn.textContent = "Play BGM";
+      } else {
+        status.textContent = "Playing — looping background score.";
+        toggleBtn.textContent = "Pause BGM";
+      }
+    }
+
+    toggleBtn.addEventListener("click", async () => {
+      try {
+        if (audio.paused) {
+          await audio.play();
+        } else {
+          audio.pause();
+        }
+        updateStatus();
+      } catch (err) {
+        status.textContent = "Playback blocked by browser. Click again to retry.";
+      }
+    });
+
+    stopBtn.addEventListener("click", () => {
+      audio.pause();
+      audio.currentTime = 0;
+      updateStatus();
+    });
+
+    audio.addEventListener("play", updateStatus);
+    audio.addEventListener("pause", updateStatus);
+  </script>
+</body>
+</html>
