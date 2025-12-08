@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kaiju Crisis Console - Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-[#0b0b15] via-[#050505] to-[#0b0b15] text-slate-100 flex flex-col overflow-x-hidden">
+    <header class="relative border-b border-red-500/30 bg-red-500/5 shadow-2xl px-4 sm:px-6 py-4">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(239,68,68,0.12),transparent_30%)]"></div>
+    <div class="relative flex flex-wrap items-end justify-between gap-3">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-semibold">
+          <span class="px-3 py-1 rounded-full bg-red-500 text-[#0b0b15] shadow-[0_0_18px_rgba(239,68,68,0.75)]">Alert</span>
+          <span>National Kaiju Response Agency</span>
+        </div>
+        <div class="text-slate-300 text-sm">Live crisis console · Mock data for hackathon demo</div>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-end">
+        <a href="countermeasures.html" class="text-[0.78rem] px-3 py-2 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 transition">Countermeasures</a>
+        <div class="flex items-center gap-2 bg-red-500/15 border border-red-500/40 px-3 py-2 rounded-xl text-[0.78rem] uppercase tracking-[0.08em] shadow-[0_0_22px_rgba(239,68,68,0.35)]">
+          <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_14px_rgba(239,68,68,0.9)] animate-pulse"></span>
+          Condition Red · Response level 1 · Live feed
+        </div>
+      </div>
+    </div>
+    <div class="relative mt-3 overflow-hidden rounded-lg border border-red-500/40 bg-gradient-to-r from-red-500/30 via-red-400/20 to-red-500/10 px-3 py-2 text-sm tracking-wide">
+      <div class="inline-block animate-[marquee_14s_linear_infinite] whitespace-nowrap">Broadcast: Maintain evacuation corridors L3/L4 · All coastal defenses on standby · Mobile batteries deploy to grid nodes A12, A13, B01 · Airspace closed above 5,000m · </div>
+    </div>
+  </header>
+
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-[260px_1.6fr_1.1fr] gap-4 p-4">
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl">
+      <div class="flex items-baseline justify-between gap-2 mb-3">
+        <div class="text-xs uppercase tracking-[0.18em] text-slate-300">Active Kaiju Incidents</div>
+        <div class="text-[0.7rem] px-3 py-1 rounded-full bg-red-500/15 border border-red-400/40 text-red-100" id="kaiju-count-badge">0 threats</div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3 text-sm">
+        <div class="rounded-xl border border-white/10 bg-slate-900/70 p-3 shadow-inner">
+          <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Active Incidents</div>
+          <div class="text-2xl font-bold" id="stat-incidents">-</div>
+          <div class="text-slate-400 text-xs">Across monitored regions</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-slate-900/70 p-3 shadow-inner">
+          <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Evacuation Zones</div>
+          <div class="text-xl font-semibold">L1 · L2 · L3</div>
+          <div class="text-slate-400 text-xs">Curfew enforced</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-slate-900/70 p-3 shadow-inner">
+          <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Signal Uptime</div>
+          <div class="text-xl font-semibold">99.2%</div>
+          <div class="text-slate-400 text-xs">Telemetry link integrity</div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 max-h-[calc(100vh-190px)] overflow-y-auto" id="kaiju-list"></div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl">
+        <div class="flex items-baseline justify-between gap-2 mb-3">
+          <div class="text-xs uppercase tracking-[0.18em] text-slate-300">Kaiju Profile & Analysis</div>
+          <div class="text-[0.7rem] px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-slate-200" id="selected-kaiju-badge">No target selected</div>
+        </div>
+        <div class="grid grid-cols-1 xl:grid-cols-[1.4fr_1fr] gap-4">
+          <div>
+            <div class="text-2xl font-extrabold tracking-tight" id="detail-name">None</div>
+            <div class="text-sm text-slate-300 mb-3" id="detail-latin">Choose a kaiju from the left panel.</div>
+            <div class="grid grid-cols-2 gap-3 text-sm">
+              <div>
+                <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Threat Level</div>
+                <div id="detail-threat">-</div>
+              </div>
+              <div>
+                <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Last Seen</div>
+                <div id="detail-last-seen">-</div>
+              </div>
+              <div>
+                <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Current Location</div>
+                <div id="detail-location">-</div>
+              </div>
+              <div>
+                <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Type</div>
+                <div id="detail-type">-</div>
+              </div>
+            </div>
+            <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400 mt-3">Observed Capabilities</div>
+            <div class="flex flex-wrap gap-2 mt-2" id="detail-tags"></div>
+            <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400 mt-3">Analyst Notes (Demo)</div>
+            <div class="text-sm text-slate-300 mt-1" id="detail-notes">-</div>
+          </div>
+          <div>
+            <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400 mb-2">Projected Impact Radius (Mock)</div>
+            <div class="relative h-56 rounded-xl border border-red-500/50 bg-[radial-gradient(circle_at_top,rgba(239,68,68,0.2),transparent_55%),radial-gradient(circle_at_bottom,rgba(255,255,255,0.05),transparent_55%),#0a0a12] p-3 text-xs text-slate-400">
+              <div class="absolute top-2 left-3 uppercase tracking-[0.12em] text-[0.65rem]">MAP: Tokyo Bay Area (Simulated)</div>
+              <div class="absolute px-2 py-1 rounded-full bg-slate-900/90 border border-white/25 text-[0.7rem]" style="top:40%;left:20%;">Yokohama</div>
+              <div class="absolute px-2 py-1 rounded-full bg-slate-900/90 border border-white/25 text-[0.7rem]" style="top:60%;left:45%;">Chiba</div>
+              <div class="absolute px-2 py-1 rounded-full bg-slate-900/90 border border-red-400/80 text-[0.7rem] shadow-[0_0_12px_rgba(239,68,68,0.5)]" style="top:30%;left:65%;">Tokyo</div>
+              <div class="absolute w-6 h-6 rounded-full bg-[radial-gradient(circle_at_30%_20%,#ffb13b,#b91c1c)] shadow-[0_0_18px_rgba(239,68,68,0.7)] flex items-center justify-center font-bold text-[0.75rem] animate-pulse" id="map-kaiju" style="top:58%;left:40%;">K</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl">
+        <div class="flex items-baseline justify-between gap-2 mb-3">
+          <div class="text-xs uppercase tracking-[0.18em] text-slate-300">Recent Field Operations</div>
+          <div class="text-[0.7rem] px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-slate-200">Live feed (demo data)</div>
+        </div>
+        <div class="flex flex-col gap-2 max-h-64 overflow-y-auto text-sm" id="ops-list"></div>
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl">
+        <div class="flex items-baseline justify-between gap-2 mb-3">
+          <div class="text-xs uppercase tracking-[0.18em] text-slate-300">Radiation & Environmental Status</div>
+          <div class="text-[0.7rem] px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-slate-200" id="rad-risk-badge">Unknown</div>
+        </div>
+        <div class="flex items-center gap-2 text-sm mb-2">
+          <span>Region:</span>
+          <select id="region-select" class="bg-slate-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-slate-100">
+            <option value="all">All</option>
+            <option value="kanto">Kanto</option>
+            <option value="pacific">Pacific Offshore</option>
+            <option value="underground">Underground</option>
+          </select>
+        </div>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center gap-3">
+            <div>
+              <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Ambient Radiation (uSv/h)</div>
+              <div class="font-semibold" id="rad-ambient">-</div>
+            </div>
+            <div class="flex-1 h-2 rounded-full bg-slate-900 border border-white/10 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-red-500 transition-all" id="rad-ambient-bar"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div>
+              <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Hotspot Proximity</div>
+              <div class="font-semibold" id="rad-hotspot">-</div>
+            </div>
+            <div class="flex-1 h-2 rounded-full bg-slate-900 border border-white/10 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-red-500 transition-all" id="rad-hotspot-bar"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div>
+              <div class="text-[0.7rem] uppercase tracking-[0.08em] text-slate-400">Evacuation Zone Integrity</div>
+              <div class="font-semibold" id="rad-evac">-</div>
+            </div>
+            <div class="flex-1 h-2 rounded-full bg-slate-900 border border-white/10 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-amber-300 to-red-500 transition-all" id="rad-evac-bar"></div>
+            </div>
+          </div>
+          <div class="text-sm">Overall Risk: <span class="inline-flex items-center gap-2 text-[0.78rem] px-3 py-1 rounded-full border border-white/10" id="risk-pill">-</span></div>
+        </div>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl text-sm text-slate-300 space-y-2">
+        <div class="flex items-baseline justify-between gap-2 mb-1">
+          <div class="text-xs uppercase tracking-[0.18em] text-slate-300">System Notes</div>
+          <div class="text-[0.7rem] px-3 py-1 rounded-full bg-slate-800 border border-white/10 text-slate-200">Front-end only (prototype)</div>
+        </div>
+        <p>This dashboard is a hackathon demo. <strong>It is not a real government system.</strong> All data is fixed sample content stored in JavaScript. For production use, replace with live APIs, authentication, monitoring, and audit logging.</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Replace map, radiation, and route data with real API sources.</li>
+          <li>Integrate alerting, evacuation messaging, and external sensor inputs.</li>
+          <li>AI-written analysis notes are mock text; implement or remove as needed.</li>
+        </ul>
+        <p>Feel free to modify and extend for your scenario.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-[0.75rem] text-slate-400 border-t border-white/10 px-4 py-3 text-right bg-[#090914]">&copy; 2025 National Kaiju Response Agency (Demo) | For hackathon use only</footer>
+
+  <script>
+    const kaijuData = [
+      { id: 1, name: "Godzilla", codename: "Project G-01 \"Gojira\"", threatLevel: 5, lastSeen: "2025-12-08 15:22 JST", location: "Tokyo Bay outer waters", type: "Radioactive amphibious class", tags: ["Heat beam", "Amphibious", "High regeneration"], notes: "Awakened by nuclear waste. Ongoing damage to port infrastructure. Often strikes from underwater; heat beam reaches long distances. Maintain wide evacuation.", mapPosition: { top: "58%", left: "40%" } },
+      { id: 2, name: "King Ghidorah", codename: "Project K-03 \"Ghidorah\"", threatLevel: 6, lastSeen: "2025-12-08 14:05 JST", location: "Stratosphere, 10,000m", type: "Pterosaur class / gravity wave interference", tags: ["Gravity wave fields", "Atmospheric lightning", "Hypersonic flight"], notes: "Forms storm clouds before appearing. Lightning output cripples the power grid. Flight path syncs with jet stream; defense lines must pre-position ahead of the track.", mapPosition: { top: "25%", left: "55%" } },
+      { id: 3, name: "Mothra", codename: "Project M-02 \"Mothra\"", threatLevel: 3, lastSeen: "2025-12-08 13:40 JST", location: "Boso Peninsula highlands", type: "Giant insect class / protective", tags: ["Luminous powder", "Defensive behavior", "Signs of human-friendly intent"], notes: "Avoids people but strong wing gusts can topple equipment. Circles shrines; evaluate for protection status. Powder occasionally disrupts electronics.", mapPosition: { top: "40%", left: "70%" } }
+    ];
+
+    const operations = [
+      { title: "Re-checking Tokyo Bay L3 evacuation routes", time: "15:25", region: "kanto", level: "CRITICAL", tags: ["Evac routes", "Infrastructure"], description: "Reinstalling barricades along the L3 line as Godzilla advances. Bridge damage near Shin-Kiba confirmed; heavy machinery on standby." },
+      { title: "Power system inspection in underground facility", time: "15:10", region: "underground", level: "INFO", tags: ["Power", "Maintenance"], description: "Inspecting backup power at -40m. Reinforcing surge protection against storm activity and delivering spare transformer parts." },
+      { title: "Abnormal EM waves detected offshore Pacific", time: "14:55", region: "pacific", level: "HIGH", tags: ["Route change", "Ship evacuation"], description: "High-output electromagnetic bursts tied to Ghidorah flight. Rerouting lanes south and issuing emergency notices to cargo vessels." },
+      { title: "Kanto-wide emergency broadcast drill", time: "14:30", region: "kanto", level: "MEDIUM", tags: ["Drill", "Public alert"], description: "Disaster radio test across the metro area. 15% of zones reported latency; scheduling a repeat test." }
+    ];
+
+    const radiationByRegion = {
+      all: { ambient: 0.9, hotspot: 35, evacIntegrity: 82 },
+      kanto: { ambient: 1.5, hotspot: 68, evacIntegrity: 76 },
+      pacific: { ambient: 2.1, hotspot: 80, evacIntegrity: 64 },
+      underground: { ambient: 0.3, hotspot: 5, evacIntegrity: 93 }
+    };
+
+    let selectedKaijuId = null;
+
+    const baseKaijuClass = "kaiju-item flex justify-between items-center rounded-xl border border-white/10 bg-slate-900/70 px-3 py-2.5 transition hover:-translate-y-0.5 hover:border-red-400/50 hover:bg-red-500/10 text-sm";
+    const activeKaijuClass = " border-red-500/70 bg-red-500/15 shadow-[0_0_18px_rgba(239,68,68,0.45)]";
+
+    const kaijuListEl = document.getElementById("kaiju-list");
+    const kaijuCountBadge = document.getElementById("kaiju-count-badge");
+    const detailName = document.getElementById("detail-name");
+    const detailLatin = document.getElementById("detail-latin");
+    const detailThreat = document.getElementById("detail-threat");
+    const detailLastSeen = document.getElementById("detail-last-seen");
+    const detailLocation = document.getElementById("detail-location");
+    const detailType = document.getElementById("detail-type");
+    const detailTags = document.getElementById("detail-tags");
+    const detailNotes = document.getElementById("detail-notes");
+    const detailBadge = document.getElementById("selected-kaiju-badge");
+    const mapKaiju = document.getElementById("map-kaiju");
+    const opsListEl = document.getElementById("ops-list");
+    const regionSelect = document.getElementById("region-select");
+    const radAmbient = document.getElementById("rad-ambient");
+    const radHotspot = document.getElementById("rad-hotspot");
+    const radEvac = document.getElementById("rad-evac");
+    const radAmbientBar = document.getElementById("rad-ambient-bar");
+    const radHotspotBar = document.getElementById("rad-hotspot-bar");
+    const radEvacBar = document.getElementById("rad-evac-bar");
+    const radRiskBadge = document.getElementById("rad-risk-badge");
+    const riskPill = document.getElementById("risk-pill");
+    const statIncidents = document.getElementById("stat-incidents");
+
+    function renderKaijuList() {
+      kaijuListEl.innerHTML = "";
+      kaijuCountBadge.textContent = `${kaijuData.length} threats`;
+      statIncidents.textContent = kaijuData.length;
+
+      kaijuData.forEach((k) => {
+        const item = document.createElement("div");
+        item.className = baseKaijuClass;
+        item.dataset.id = k.id;
+
+        const left = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "text-base font-semibold tracking-tight";
+        name.textContent = k.name;
+
+        const meta = document.createElement("div");
+        meta.className = "text-xs text-slate-400";
+        meta.textContent = `${k.location} | Lv.${k.threatLevel} | ${k.lastSeen}`;
+
+        left.appendChild(name);
+        left.appendChild(meta);
+
+        const chip = document.createElement("div");
+        chip.className = "text-[0.7rem] px-3 py-1 rounded-full border";
+
+        if (k.threatLevel >= 5) {
+          chip.classList.add("border-red-400", "text-red-300");
+          chip.textContent = "Critical";
+        } else if (k.threatLevel >= 3) {
+          chip.classList.add("border-amber-300", "text-amber-200");
+          chip.textContent = "Elevated";
+        } else {
+          chip.classList.add("border-emerald-300", "text-emerald-200");
+          chip.textContent = "Monitored";
+        }
+
+        item.appendChild(left);
+        item.appendChild(chip);
+
+        item.addEventListener("click", () => {
+          selectKaiju(k.id);
+        });
+
+        kaijuListEl.appendChild(item);
+      });
+    }
+
+    function selectKaiju(id) {
+      selectedKaijuId = id;
+      const k = kaijuData.find((x) => x.id === id);
+      if (!k) return;
+
+      document.querySelectorAll(".kaiju-item").forEach((el) => {
+        const isActive = Number(el.dataset.id) === id;
+        el.className = baseKaijuClass + (isActive ? activeKaijuClass : "");
+      });
+
+      detailName.textContent = k.name;
+      detailLatin.textContent = k.codename;
+      detailThreat.textContent = `Level ${k.threatLevel}`;
+      detailLastSeen.textContent = k.lastSeen;
+      detailLocation.textContent = k.location;
+      detailType.textContent = k.type;
+
+      detailTags.innerHTML = "";
+      k.tags.forEach((t) => {
+        const tagEl = document.createElement("div");
+        tagEl.className = "text-[0.72rem] px-3 py-1 rounded-full border border-white/15 bg-white/5";
+        tagEl.textContent = t;
+        detailTags.appendChild(tagEl);
+      });
+
+      detailNotes.textContent = k.notes;
+      detailBadge.textContent = `Tracking: ${k.name}`;
+
+      mapKaiju.style.top = k.mapPosition.top;
+      mapKaiju.style.left = k.mapPosition.left;
+      mapKaiju.textContent = k.name[0];
+
+      const base = radiationByRegion[regionSelect.value] || radiationByRegion["all"];
+      const boosted = {
+        ambient: base.ambient + k.threatLevel * 0.2,
+        hotspot: Math.min(100, base.hotspot + k.threatLevel * 3),
+        evacIntegrity: Math.max(0, base.evacIntegrity - k.threatLevel * 2)
+      };
+      updateRadiationDisplay(boosted);
+    }
+
+    function renderOperations(region = "all") {
+      opsListEl.innerHTML = "";
+      const filtered = region === "all" ? operations : operations.filter((op) => op.region === region);
+
+      if (filtered.length === 0) {
+        opsListEl.innerHTML = '<div class="text-slate-400">No operations for this region.</div>';
+        return;
+      }
+
+      filtered.forEach((op) => {
+        const item = document.createElement("div");
+        item.className = "rounded-xl border border-white/10 bg-slate-900/80 p-3 shadow-inner space-y-1";
+
+        const header = document.createElement("div");
+        header.className = "flex justify-between items-baseline gap-3";
+
+        const title = document.createElement("div");
+        title.className = "font-semibold";
+        title.textContent = op.title;
+
+        const meta = document.createElement("div");
+        meta.className = "text-xs text-slate-400";
+        meta.textContent = `${op.time} | ${op.level}`;
+
+        header.appendChild(title);
+        header.appendChild(meta);
+
+        const desc = document.createElement("div");
+        desc.textContent = op.description;
+
+        const tagRow = document.createElement("div");
+        tagRow.className = "flex flex-wrap gap-2 mt-1";
+        op.tags.forEach((t) => {
+          const tag = document.createElement("div");
+          tag.className = "text-[0.68rem] px-2 py-1 rounded-full border border-white/10 text-slate-300";
+          tag.textContent = t;
+          tagRow.appendChild(tag);
+        });
+
+        item.appendChild(header);
+        item.appendChild(desc);
+        item.appendChild(tagRow);
+
+        opsListEl.appendChild(item);
+      });
+    }
+
+    function updateRadiationDisplay(sourceData) {
+      const data = sourceData || radiationByRegion[regionSelect.value] || radiationByRegion["all"];
+
+      radAmbient.textContent = data.ambient.toFixed(2);
+      radHotspot.textContent = `${data.hotspot.toFixed(0)}%`;
+      radEvac.textContent = `${data.evacIntegrity.toFixed(0)}%`;
+
+      radAmbientBar.style.width = Math.min(100, data.ambient * 10) + "%";
+      radHotspotBar.style.width = Math.min(100, data.hotspot) + "%";
+      radEvacBar.style.width = Math.min(100, data.evacIntegrity) + "%";
+
+      let score = 0;
+      score += Math.min(10, data.ambient);
+      score += data.hotspot / 15;
+      score += (100 - data.evacIntegrity) / 10;
+
+      let risk = "UNKNOWN";
+      let cls = "";
+      if (score >= 18) {
+        risk = "HIGH RISK";
+        cls = "border-red-400 text-red-200 shadow-[0_0_16px_rgba(239,68,68,0.3)]";
+      } else if (score >= 10) {
+        risk = "MEDIUM RISK";
+        cls = "border-amber-300 text-amber-200";
+      } else {
+        risk = "LOW RISK";
+        cls = "border-emerald-300 text-emerald-200";
+      }
+
+      radRiskBadge.textContent = risk;
+      riskPill.textContent = risk;
+      riskPill.className = `inline-flex items-center gap-2 text-[0.78rem] px-3 py-1 rounded-full border ${cls}`;
+    }
+
+    regionSelect.addEventListener("change", () => {
+      updateRadiationDisplay();
+      renderOperations(regionSelect.value);
+    });
+
+    renderKaijuList();
+    renderOperations("all");
+    updateRadiationDisplay();
+
+    if (kaijuData.length > 0) {
+      selectKaiju(kaijuData[0].id);
+    }
+  </script>
+</body>
+</html>
+
+
+

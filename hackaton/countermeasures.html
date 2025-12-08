@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kaiju Response Measures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 flex flex-col">
+  <header class="border-b border-amber-400/40 bg-amber-500/10 shadow-xl px-4 sm:px-6 py-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <div class="text-xs uppercase tracking-[0.2em] text-amber-200">Response Playbook</div>
+        <div class="text-xl font-bold">Kaiju Countermeasure Briefing</div>
+        <div class="text-sm text-amber-100/80">Condensed actions derived from live ops feed</div>
+      </div>
+      <a href="dashboard.html" class="text-sm px-3 py-2 rounded-full bg-amber-500 text-slate-950 font-semibold shadow-lg">Back to Dashboard</a>
+    </div>
+  </header>
+
+  <main class="flex-1 p-4 grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] gap-4">
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
+      <div class="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <div class="text-xs uppercase tracking-[0.16em] text-slate-300">Per-Kaiju Actions</div>
+          <div class="text-sm text-slate-400" id="filter-summary">—</div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap justify-end">
+          <button id="expand-all" class="text-[0.75rem] px-3 py-1 rounded-full border border-white/15 bg-white/5 hover:bg-white/10">Expand all</button>
+          <button id="collapse-all" class="text-[0.75rem] px-3 py-1 rounded-full border border-white/15 bg-white/5 hover:bg-white/10">Collapse all</button>
+          <div class="text-[0.75rem] px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-100" id="kaiju-count-badge">- targets</div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 items-center text-sm">
+        <input id="search" type="text" placeholder="Search name, location, capability..." class="flex-1 min-w-[220px] bg-slate-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-slate-100" />
+        <div class="flex gap-2 text-[0.75rem]">
+          <button data-sev="all" class="sev-pill px-3 py-1 rounded-full border border-white/15 bg-white/10">All</button>
+          <button data-sev="critical" class="sev-pill px-3 py-1 rounded-full border border-red-400/50 text-red-100">Critical</button>
+          <button data-sev="elevated" class="sev-pill px-3 py-1 rounded-full border border-amber-300/60 text-amber-100">Elevated</button>
+          <button data-sev="monitored" class="sev-pill px-3 py-1 rounded-full border border-emerald-300/60 text-emerald-100">Monitored</button>
+        </div>
+        <button id="copy-all" class="text-[0.75rem] px-3 py-2 rounded-lg border border-white/15 bg-white/10 hover:bg-white/20">Copy visible actions</button>
+      </div>
+
+      <div id="measures-list" class="space-y-3 text-sm"></div>
+    </section>
+
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
+      <div class="flex items-baseline justify-between gap-2 flex-wrap">
+        <div>
+          <div class="text-xs uppercase tracking-[0.16em] text-slate-300">Operational Directives</div>
+          <div class="text-sm text-slate-400">Live feed snapshot</div>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          <span>Region:</span>
+          <select id="region-select" class="bg-slate-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-slate-100">
+            <option value="all">All</option>
+            <option value="kanto">Kanto</option>
+            <option value="pacific">Pacific Offshore</option>
+            <option value="underground">Underground</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 max-h-[60vh] overflow-y-auto text-sm" id="ops-list"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="hidden fixed bottom-4 right-4 px-4 py-3 rounded-lg bg-emerald-500 text-slate-950 text-sm shadow-xl">Copied to clipboard</div>
+
+  <footer class="text-[0.78rem] text-slate-400 border-t border-white/10 px-4 py-3 text-right bg-slate-950/80">&copy; 2025 National Kaiju Response Agency (Demo) | Countermeasure sheet</footer>
+
+  <script>
+    const kaijuData = [
+      { id: 1, name: "Godzilla", threatLevel: 5, type: "Radioactive amphibious", location: "Tokyo Bay outer waters", capabilities: ["Heat beam", "Amphibious", "High regeneration"], advice: ["Keep L3/L4 evacuation corridors clear", "Prioritize port infrastructure shielding", "Coordinate naval sonar sweeps for submerged approach"] },
+      { id: 2, name: "King Ghidorah", threatLevel: 6, type: "Pterosaur / gravity wave", location: "Stratosphere 10,000m", capabilities: ["Gravity wave fields", "Atmospheric lightning", "Hypersonic flight"], advice: ["Suspend high-altitude flights; reroute air traffic", "Pre-stage mobile transformers; expect grid surge", "Track jet stream alignment for intercept planning"] },
+      { id: 3, name: "Mothra", threatLevel: 3, type: "Giant insect (protective)", location: "Boso Peninsula highlands", capabilities: ["Luminous powder", "Defensive behavior", "Human-friendly intent signs"], advice: ["Keep civilian presence minimal to avoid defensive gusts", "Deploy non-lethal observation drones", "Respect shrine perimeter; consider protective classification"] }
+    ];
+
+    const operations = [
+      { title: "Re-checking Tokyo Bay L3 evacuation routes", time: "15:25", region: "kanto", level: "CRITICAL", tags: ["Evac routes", "Infrastructure"], description: "Reinstalling barricades along the L3 line as Godzilla advances. Bridge damage near Shin-Kiba confirmed; heavy machinery on standby." },
+      { title: "Power system inspection in underground facility", time: "15:10", region: "underground", level: "INFO", tags: ["Power", "Maintenance"], description: "Inspecting backup power at -40m. Reinforcing surge protection against storm activity and delivering spare transformer parts." },
+      { title: "Abnormal EM waves detected offshore Pacific", time: "14:55", region: "pacific", level: "HIGH", tags: ["Route change", "Ship evacuation"], description: "High-output electromagnetic bursts tied to Ghidorah flight. Rerouting lanes south and issuing emergency notices to cargo vessels." },
+      { title: "Kanto-wide emergency broadcast drill", time: "14:30", region: "kanto", level: "MEDIUM", tags: ["Drill", "Public alert"], description: "Disaster radio test across the metro area. 15% of zones reported latency; scheduling a repeat test." }
+    ];
+
+    const measuresList = document.getElementById("measures-list");
+    const opsListEl = document.getElementById("ops-list");
+    const kaijuCount = document.getElementById("kaiju-count-badge");
+    const filterSummary = document.getElementById("filter-summary");
+    const searchInput = document.getElementById("search");
+    const toast = document.getElementById("toast");
+
+    let severityFilter = "all";
+    let expandedIds = new Set();
+
+    function severityOf(k) {
+      if (k.threatLevel >= 5) return "critical";
+      if (k.threatLevel >= 3) return "elevated";
+      return "monitored";
+    }
+
+    function matchFilters(k) {
+      if (severityFilter !== "all" && severityOf(k) !== severityFilter) return false;
+      const term = searchInput.value.trim().toLowerCase();
+      if (!term) return true;
+      const hay = `${k.name} ${k.location} ${k.type} ${k.capabilities.join(" ")}`.toLowerCase();
+      return hay.includes(term);
+    }
+
+    function renderMeasures() {
+      const filtered = kaijuData.filter(matchFilters);
+      kaijuCount.textContent = `${filtered.length} targets`;
+      filterSummary.textContent = `${filtered.length} shown · ${kaijuData.length} total`;
+      measuresList.innerHTML = "";
+
+      filtered.forEach((k) => {
+        const wrap = document.createElement("div");
+        wrap.className = "rounded-xl border border-white/10 bg-slate-900/70 p-3 shadow-inner space-y-3";
+
+        const header = document.createElement("div");
+        header.className = "flex justify-between items-start gap-3 flex-wrap";
+        const nameBlock = document.createElement("div");
+        nameBlock.className = "space-y-1";
+        const name = document.createElement("div");
+        name.className = "text-lg font-bold";
+        name.textContent = k.name;
+        const meta = document.createElement("div");
+        meta.className = "text-xs text-slate-400";
+        meta.textContent = `${k.type} | ${k.location}`;
+        nameBlock.appendChild(name); nameBlock.appendChild(meta);
+
+        const right = document.createElement("div");
+        right.className = "flex gap-2 items-center flex-wrap";
+        const chip = document.createElement("div");
+        chip.className = "text-[0.7rem] px-3 py-1 rounded-full border";
+        const sev = severityOf(k);
+        if (sev === "critical") { chip.classList.add("border-red-400", "text-red-200"); chip.textContent = "Critical"; }
+        else if (sev === "elevated") { chip.classList.add("border-amber-300", "text-amber-200"); chip.textContent = "Elevated"; }
+        else { chip.classList.add("border-emerald-300", "text-emerald-200"); chip.textContent = "Monitored"; }
+
+        const toggle = document.createElement("button");
+        toggle.className = "text-[0.72rem] px-3 py-1 rounded-full border border-white/10 bg-white/5 hover:bg-white/10";
+        toggle.textContent = expandedIds.has(k.id) ? "Hide actions" : "Show actions";
+        toggle.addEventListener("click", () => {
+          if (expandedIds.has(k.id)) expandedIds.delete(k.id); else expandedIds.add(k.id);
+          renderMeasures();
+        });
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "text-[0.72rem] px-3 py-1 rounded-full border border-white/10 bg-white/5 hover:bg-white/10";
+        copyBtn.textContent = "Copy";
+        copyBtn.addEventListener("click", () => copyAdvice(k));
+
+        right.appendChild(chip);
+        right.appendChild(toggle);
+        right.appendChild(copyBtn);
+
+        header.appendChild(nameBlock);
+        header.appendChild(right);
+
+        wrap.appendChild(header);
+
+        const capRow = document.createElement("div");
+        capRow.className = "flex flex-wrap gap-2";
+        k.capabilities.forEach((c) => {
+          const tag = document.createElement("div");
+          tag.className = "text-[0.7rem] px-2 py-1 rounded-full border border-white/10 text-slate-200";
+          tag.textContent = c;
+          capRow.appendChild(tag);
+        });
+        wrap.appendChild(capRow);
+
+        if (expandedIds.has(k.id)) {
+          const actions = document.createElement("ul");
+          actions.className = "list-disc pl-5 space-y-1 text-slate-200";
+          k.advice.forEach((a) => {
+            const li = document.createElement("li");
+            li.textContent = a;
+            actions.appendChild(li);
+          });
+          wrap.appendChild(actions);
+        }
+
+        measuresList.appendChild(wrap);
+      });
+    }
+
+    function copyAdvice(k) {
+      const text = k.advice.join("\n");
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast());
+      }
+    }
+
+    function copyVisible() {
+      const filtered = kaijuData.filter(matchFilters);
+      const text = filtered.map((k) => `${k.name}:\n- ${k.advice.join("\n- ")}`).join("\n\n");
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast());
+      }
+    }
+
+    function showToast() {
+      toast.classList.remove("hidden");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.add("hidden"), 1800);
+    }
+
+    function renderOperations(region = "all") {
+      opsListEl.innerHTML = "";
+      const filtered = region === "all" ? operations : operations.filter((op) => op.region === region);
+
+      if (filtered.length === 0) {
+        opsListEl.innerHTML = '<div class="text-slate-400">No operations for this region.</div>';
+        return;
+      }
+
+      filtered.forEach((op) => {
+        const item = document.createElement("div");
+        item.className = "rounded-xl border border-white/10 bg-slate-900/80 p-3 shadow-inner space-y-1";
+
+        const header = document.createElement("div");
+        header.className = "flex justify-between items-baseline gap-3";
+        const title = document.createElement("div");
+        title.className = "font-semibold";
+        title.textContent = op.title;
+        const meta = document.createElement("div");
+        meta.className = "text-xs text-slate-400";
+        meta.textContent = `${op.time} | ${op.level}`;
+        header.appendChild(title); header.appendChild(meta);
+
+        const desc = document.createElement("div");
+        desc.textContent = op.description;
+
+        const tagRow = document.createElement("div");
+        tagRow.className = "flex flex-wrap gap-2 mt-1";
+        op.tags.forEach((t) => {
+          const tag = document.createElement("div");
+          tag.className = "text-[0.68rem] px-2 py-1 rounded-full border border-white/10 text-slate-300";
+          tag.textContent = t;
+          tagRow.appendChild(tag);
+        });
+
+        item.appendChild(header);
+        item.appendChild(desc);
+        item.appendChild(tagRow);
+        opsListEl.appendChild(item);
+      });
+    }
+
+    document.getElementById("region-select").addEventListener("change", (e) => {
+      renderOperations(e.target.value);
+    });
+
+    document.querySelectorAll(".sev-pill").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".sev-pill").forEach((b) => b.classList.remove("ring", "ring-amber-300"));
+        btn.classList.add("ring", "ring-amber-300");
+        severityFilter = btn.dataset.sev;
+        renderMeasures();
+      });
+    });
+
+    document.getElementById("expand-all").addEventListener("click", () => {
+      kaijuData.forEach((k) => expandedIds.add(k.id));
+      renderMeasures();
+    });
+
+    document.getElementById("collapse-all").addEventListener("click", () => {
+      expandedIds = new Set();
+      renderMeasures();
+    });
+
+    document.getElementById("copy-all").addEventListener("click", copyVisible);
+    searchInput.addEventListener("input", renderMeasures);
+
+    renderMeasures();
+    renderOperations("all");
+  </script>
+</body>
+</html>
