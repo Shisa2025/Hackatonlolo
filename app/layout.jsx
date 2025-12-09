@@ -1,4 +1,5 @@
 import './globals.css';
+import '../component/index.css';
 
 export const metadata = {
   title: 'Hackatonlolo',
@@ -11,7 +12,7 @@ export default function RootLayout({ children }) {
       <head>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
-      <body className="bg-slate-950 text-slate-100">{children}</body>
+      <body className="bg-[#0d0000] text-slate-100">{children}</body>
     </html>
   );
 }
