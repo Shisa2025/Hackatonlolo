@@ -86,6 +86,45 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm shadow-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 frame-accent">
+          <div className="space-y-1">
+            <div className="text-xs uppercase tracking-[0.16em] text-white/80">Disaster Response Prototype</div>
+            <div className="text-lg font-semibold text-white">
+              Monitor incidents, deploy countermeasures, and brief mission teams in one command surface.
+            </div>
+            <div className="text-sm text-white/70">
+              Crisis / defense simulation built for hackathon demo. Live feel, simulated data.
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/dashboard"
+              className="px-4 py-2 rounded-xl bg-red-500/80 border border-red-200/70 text-white font-semibold shadow-lg hover:bg-red-500"
+            >
+              Open Dashboard
+            </Link>
+            <Link
+              href="/synopsis"
+              className="px-4 py-2 rounded-xl border border-white/40 text-white/90 hover:border-white/70 hover:text-white"
+            >
+              Quick Tour
+            </Link>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm shadow-2xl p-4 grid grid-cols-1 md:grid-cols-3 gap-3 frame-accent">
+          {[
+            { title: 'Monitor Incidents', desc: 'Track kaiju vector, threat bands, and field units in real time.' },
+            { title: 'Deploy Countermeasures', desc: 'Launch perimeter, barrier lines, air intercept, and evac routing.' },
+            { title: 'Guide Civilians', desc: 'Push shelter routes, alerts, and public messaging from one console.' },
+          ].map((item) => (
+            <div key={item.title} className="rounded-xl border border-white/20 bg-white/5 p-3 holo-grid">
+              <div className="text-sm font-semibold text-white">{item.title}</div>
+              <div className="text-sm text-white/75 mt-1">{item.desc}</div>
+            </div>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-sm shadow-2xl p-4 frame-accent">
             <div className="flex items-center justify-between mb-3">
