@@ -10,6 +10,7 @@ const mockEvents = [
 
 export default function UserDashboard() {
   const [userInfo, setUserInfo] = useState(null);
+  const [statusMessage, setStatusMessage] = useState('');
 
   useEffect(() => {
     try {
@@ -20,8 +21,38 @@ export default function UserDashboard() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (!userInfo?.id && !userInfo?.email) return;
+      try {
+        const params = new URLSearchParams();
+        if (userInfo.id) params.set('id', userInfo.id);
+        else if (userInfo.email) params.set('email', userInfo.email);
+        const res = await fetch(`/api/user/status?${params.toString()}`, { method: 'GET' });
+        const text = await res.text();
+        const body = text ? JSON.parse(text) : {};
+        if (res.ok && body?.user) {
+          const merged = { ...body.user, can_create_disaster: body.can_create_disaster };
+          setUserInfo(merged);
+          window.localStorage.setItem('sessionUser', JSON.stringify(merged));
+          if (body.user.account_status === 'banned') {
+            setStatusMessage('Your account has been banned. Access is limited.');
+          } else if (body.user.account_status === 'pending') {
+            setStatusMessage('Your account is pending; some actions are disabled.');
+          } else {
+            setStatusMessage('');
+          }
+        }
+      } catch {
+        // silent
+      }
+    };
+    fetchStatus();
+  }, [userInfo?.id, userInfo?.email]);
+
   const status = userInfo?.account_status ?? 'active';
   const role = userInfo?.role ?? 'user';
+  const canCreate = Boolean(userInfo?.can_create_disaster ?? status === 'active');
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-6 py-10">
@@ -44,6 +75,37 @@ export default function UserDashboard() {
           <div className="text-xs uppercase tracking-[0.14em] text-slate-300">Account</div>
           <div className="text-xl font-semibold mt-1">{userInfo?.user_name || 'User name unavailable'}</div>
           <div className="text-sm text-slate-400">{userInfo?.email || 'Email unavailable'}</div>
+        </div>
+
+        {statusMessage && (
+          <div className="rounded-xl border border-amber-300/40 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">
+            {statusMessage}
+          </div>
+        )}
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="text-sm font-semibold text-slate-100">Report a disaster</div>
+            <div className="text-xs text-slate-400">
+              {canCreate
+                ? 'Ready to file a new incident when available.'
+                : status === 'banned'
+                  ? 'Banned accounts cannot create or access new incidents.'
+                  : 'Pending accounts cannot create new disasters.'}
+            </div>
+          </div>
+          <button
+            type="button"
+            disabled={!canCreate}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
+              canCreate
+                ? 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
+                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+            }`}
+            title={canCreate ? 'Coming soon' : 'Awaiting approval to create incidents'}
+          >
+            {canCreate ? 'Create (coming soon)' : 'Creation locked'}
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -63,8 +63,12 @@ export async function POST(req) {
     );
     if (rows.length === 0) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     const user = rows[0];
+    if (user.account_status === 'banned') {
+      return NextResponse.json({ error: 'Account is banned' }, { status: 403 });
+    }
     const ok = await verifyPassword(user.password_hash, password);
     if (!ok) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    const canCreateDisaster = user.account_status === 'active';
     return NextResponse.json(
       {
         user: {
@@ -74,6 +78,7 @@ export async function POST(req) {
           account_status: user.account_status,
           role: user.role,
           created_at: user.created_at,
+          can_create_disaster: canCreateDisaster,
         },
         message: 'User login successful.',
       },
