@@ -1,15 +1,20 @@
 'use client';
 
+import {useState} from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
-import { animate, createTimeline, stagger } from 'animejs';
+import {useRouter} from 'next/navigation';
+import { animate, createTimeline, cubicBezier} from 'animejs';
+
+import {useEffect} from 'react';
+
 
 export default function AdminDashboard() {
   const [clicks, setClicks] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [secretInput, setSecretInput] = useState('');
   const [secretError, setSecretError] = useState('');
-
+  const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
   const handleCursorClick = () => {
     const next = clicks + 1;
     if (next >= 7) {
@@ -31,60 +36,175 @@ export default function AdminDashboard() {
     }
   };
 
+
+  useEffect(() =>{
+
+    const intro = createTimeline({
+    })
+    intro.add('#subheading1',{
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    })
+    intro.add('#heading',{
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=700')  // Play at same time as previous animation
+    intro.add('#subheading2',{
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=700')
+    intro.add('#signbutton',{
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=700')
+
+    intro.add('#adminbutton1', {
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=600')
+    
+    intro.add('#adminbutton2', {
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=600')
+
+    intro.add('#adminbutton3', {
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=600')
+
+    intro.add('#secretbutton', {
+      opacity: [0, 1],
+      translateY: [200, 0],
+      duration: 800,
+      easing: 'easeOutQuad'
+    }, '-=600')
+
+    intro.add('#signbutton-text',{
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutQuad'
+    }, '+=200')
+
+    intro.add('#adminbuttonstext',{
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutQuad'
+    }, '-=600')
+
+    intro.add('#secretimage',{
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutQuad'
+    }, '-=600')
+    
+  }, []);
+  async function handleSignOut() {
+    if (disabled) return;
+    setDisabled(true);
+
+    // Optional: call your sign-out endpoint to clear server session
+    try {
+      await fetch('/signin', { method: 'POST' });
+    } catch (err) {
+      // continue anyway
+    }
+
+    // Animate button up and fade out
+
+    const tl = createTimeline({
+      autoplay: true
+    });
+
+    tl.add('#all',{
+      opacity: [1, 0],
+      duration: 800,
+      easing: cubicBezier(0.63,0.125,0.815,0.395)
+    });
+
+
+
+    // Wait for timeline to finish, then navigate
+    setTimeout(() => {
+      router.push('/signin?role=admin');
+    }, 1200); // total animation duration
+  }
+
+
   return (
     <main className="min-h-screen bg-yellow-50 text-slate-100 px-6 py-10">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div id='all' className="max-w-6xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs uppercase tracking-[0.15em] text-red-900 font-medium">Admin Dashboard</div>
-            <h1 className="text-7xl font-bold tracking-tight text-red-700 py-2">Control Panel</h1>
-            <p className="text-red-900 text-m py-2 font-medium">Manage users and review disaster records.</p>
+            <div id='subheading1' className="text-xs uppercase tracking-[0.15em] text-red-900 font-medium opacity-0">Admin Dashboard</div>
+            <h1 id='heading' className="text-7xl font-bold tracking-tight text-red-700 py-2 opacity-0">Control Panel</h1>
+            <p id='subheading2' className="text-red-900 text-m py-2 font-medium translate-x-12 opacity-0">Manage users and review disaster records.</p>
           </div>
-          <Link
-            href="/signin?role=admin"
-            className="px-4 py-2 rounded-xl border border-white/20 bg-red-700 text-sm hover:border-white/40 font-medium"
+          <button
+            id="signbutton"
+            onClick={handleSignOut}
+            disabled={disabled}
+            aria-busy={disabled}
+            className="px-4 py-2 rounded-xl border border-white/20 bg-red-700 text-sm hover:bg-red-400 hover:text-white hover:shadow-2xl font-medium opacity-0"
           >
-            Sign out / switch
-          </Link>
+            <span id='signbutton-text' className="opacity-0">Sign out / switch</span>
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 ">
           <Link
             href="/admin/users"
-            className="rounded-2xl border border-white/10 bg-red-700 p-5 hover:border-white/30 transition space-y-2"
+            id='adminbutton1'
+            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
           >
-            <div className="text-sm uppercase tracking-[0.1em] text-white/80">Manage</div>
-            <div className="text-xl font-semibold">User management</div>
-            <p className="text-sm text-white/80 font-medium">Review users and update pending accounts.</p>
+            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
+            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">User management</div>
+            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Review users and update pending accounts.</p>
           </Link>
 
           <Link
             href="/admin/disaster-type"
-            className="rounded-2xl border border-white/10 bg-red-700 p-5 hover:border-white/30 transition space-y-2"
+            id='adminbutton2'
+            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
           >
-            <div className="text-sm uppercase tracking-[0.1em] text-white/80">Manage</div>
-            <div className="text-xl font-semibold">Create disaster types</div>
-            <p className="text-sm text-white/80 font-medium">Create and maintain disaster types.</p>
+            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
+            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">Create disaster types</div>
+            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Create and maintain disaster types.</p>
           </Link>
 
           <Link
             href="/admin/disasters"
-            className="rounded-2xl border border-white/10 bg-red-700 p-5 hover:border-white/30 transition space-y-2"
+            id='adminbutton3'
+            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
           >
-            <div className="text-sm uppercase tracking-[0.1em] text-white/80">Manage</div>
-            <div className="text-xl font-semibold">Disaster management</div>
-            <p className="text-sm text-white/80 font-medium">Review disasters and update status.</p>
+            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
+            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">Disaster management</div>
+            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Review disasters and update status.</p>
           </Link>
         </div>
       </div>
-
       <button
         type="button"
+        id='secretbutton'
         onClick={handleCursorClick}
-        className="fixed bottom-4 right-4 h-14 w-14 rounded-full border border-white/20 bg-white/80 shadow-lg hover:shadow-xl transition flex items-center justify-center overflow-hidden"
+        className="fixed bottom-4 right-4 h-14 w-14 rounded-full border border-white/20 bg-white/80 shadow-lg hover:shadow-xl flex items-center justify-center overflow-hidden opacity-0"
         aria-label="Secret cursor trigger"
       >
-        <img src="/kaiju/index/kaijyu1.png" alt="cursor hint" className="h-10 w-10 object-contain" />
+        <img id='secretimage' src="/kaiju/index/kaijyu1.png" alt="cursor hint" className="h-10 w-10 object-contain opacity-0" />
       </button>
 
       {showModal && (
