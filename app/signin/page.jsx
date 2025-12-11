@@ -135,6 +135,11 @@ export default function SignInPage() {
           {error && <div className="text-sm text-red-600">{error}</div>}
 
           <div className="pt-2 space-y-2">
+            <div className="text-left text-sm">
+              <Link href="/" className="text-red-700 hover:text-red-900">
+                ← Back
+              </Link>
+            </div>
             <div className="text-center text-sm text-red-700">
               Don’t have an account yet?{' '}
               <Link href="/register" className="underline font-semibold hover:text-red-900">

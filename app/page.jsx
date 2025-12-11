@@ -1,82 +1,36 @@
 'use client';
 
 import Link from 'next/link';
-import {animate, createTimeline} from 'animejs';
+
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const tl = createTimeline({
-      autoplay: true
-    })
-    tl.add('#start1',{
-      delay: 1300,
-      opacity: 1,
-      easing: 'easeOutQuad',
-      duration: 800
-    })
-
-    tl.add('#start2',{
-      opacity: 1,
-      easing: 'easeOutQuad',
-      duration: 800
-    }, '+=1200')
-
-    tl.add('#start1',{
-      opacity: 0,
-      easing: 'easeOutQuad',
-      duration: 800,
-
-    }, '+=1300')
-
-    tl.add('#start2',{
-      opacity: 0,
-      easing: 'easeOutQuad',
-      duration: 800,
-
-    }, '-=800')
-
-    const mainpage = createTimeline({
-      autoplay:true
-    })
-
-    mainpage.add('#page',{
-      backgroundColor: ['#ffffff', '#fffde7'],
-      duration: 1800,
-      easing: 'easeInOutQuad',
-      autoplay: false,
-      delay: 6200
-    }, '+=1300');
-
-    setTimeout(() => {
-      router.push('/mainpage');
-    }, 8800);
-  }, []);
-
   return (
     <main className="min-h-screen bg-yellow-50 text-red-700 flex items-center justify-center px-6">
-      <div className="max-w-md w-full space-y-6 text-center">
-        <div className="text-xs uppercase tracking-[0.2em] text-red-500 font-semibold">Disaster Simulation</div>
-        <h1 className="text-8xl font-bold tracking-tight">Welcome</h1>
-        <p className="text-red-500">Choose an action to continue.</p>
+      <div className="max-w-3xl w-full space-y-8 text-center">
+        <div className="text-xs uppercase tracking-[0.2em] text-red-500 font-semibold">DisasterBuddy</div>
+        <div className="space-y-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-red-800">Stay informed. Report safely.</h1>
+          <p className="text-red-600 text-base md:text-lg">
+            Crowdsourced disaster reporting to keep communities aware. Spot incidents, share verified details, and see
+            them on a live map so responders and neighbors can act fast.
+          </p>
+          <p className="text-red-600 text-base md:text-lg">
+            Built for rapid updates, trusted categories, and clear severity levels—whether you&apos;re on the ground or
+            coordinating remotely.
+          </p>
+        </div>
+
         <div className="flex justify-center gap-4 flex-wrap">
           <Link
-            href="/register"
-            className="px-5 py-3 rounded-xl border border-red-700 bg-sky-200 text-slate-900 font-semibold shadow hover:bg-white"
+            href="/signin"
+            className="px-6 py-3 rounded-xl bg-red-600 text-white font-semibold shadow hover:bg-red-500 transition"
           >
             Get started
           </Link>
           <Link
-            href="/signin"
-            className="px-5 py-3 rounded-xl border border-red-700 bg-white text-red-700 font-semibold shadow hover:bg-sky-100"
+            href="/"
+            className="px-6 py-3 rounded-xl border border-red-300 text-red-700 bg-white font-semibold shadow-sm hover:bg-red-50 transition"
           >
-            Login
-          </Link>
-          <Link
-            href="/more-info"
-            className="px-5 py-3 rounded-xl bg-sky-200 border border-red-700 text-slate-900 font-semibold hover:bg-white"
-          >
-            More info
+            Learn more
           </Link>
         </div>
       </div>
