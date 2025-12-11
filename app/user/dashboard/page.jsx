@@ -1,14 +1,28 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-const mockStatus = { account_status: 'active', role: 'user' };
 const mockEvents = [
   { title: 'Evac drill', severity: 'medium', occurred_at: '2025-04-10 10:00' },
   { title: 'Sensor test', severity: 'low', occurred_at: '2025-04-12 08:15' },
 ];
 
 export default function UserDashboard() {
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('sessionUser');
+      if (raw) setUserInfo(JSON.parse(raw));
+    } catch {
+      // silent
+    }
+  }, []);
+
+  const status = userInfo?.account_status ?? 'active';
+  const role = userInfo?.role ?? 'user';
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-6 py-10">
       <div className="max-w-5xl mx-auto space-y-6">
@@ -26,15 +40,21 @@ export default function UserDashboard() {
           </Link>
         </div>
 
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="text-xs uppercase tracking-[0.14em] text-slate-300">Account</div>
+          <div className="text-xl font-semibold mt-1">{userInfo?.user_name || 'User name unavailable'}</div>
+          <div className="text-sm text-slate-400">{userInfo?.email || 'Email unavailable'}</div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <div className="text-xs uppercase tracking-[0.14em] text-slate-300">Status</div>
-            <div className="text-2xl font-bold capitalize">{mockStatus.account_status}</div>
+            <div className="text-2xl font-bold capitalize">{status}</div>
             <div className="text-sm text-slate-400">Account status</div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <div className="text-xs uppercase tracking-[0.14em] text-slate-300">Role</div>
-            <div className="text-2xl font-bold capitalize">{mockStatus.role}</div>
+            <div className="text-2xl font-bold capitalize">{role}</div>
             <div className="text-sm text-slate-400">Assigned role</div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">

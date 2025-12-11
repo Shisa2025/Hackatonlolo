@@ -112,8 +112,28 @@ async function main() {
       CREATE TABLE IF NOT EXISTS disaster_type (
         id SERIAL PRIMARY KEY,
         name TEXT UNIQUE NOT NULL,
-        description TEXT
+        description TEXT,
+        emoji TEXT,
+        emoji_cursor TEXT
       );
+
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'disaster_type' AND column_name = 'emoji'
+        ) THEN
+          ALTER TABLE disaster_type ADD COLUMN emoji TEXT;
+        END IF;
+
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'disaster_type' AND column_name = 'emoji_cursor'
+        ) THEN
+          ALTER TABLE disaster_type ADD COLUMN emoji_cursor TEXT;
+        END IF;
+      END
+      $$;
     `;
 
     const createDisaster = `

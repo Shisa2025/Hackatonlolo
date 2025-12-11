@@ -45,6 +45,13 @@ export default function SignInPage() {
       } else {
         setMessage(body?.message || (role === 'admin' ? 'Admin login successful.' : 'User login successful.'));
         setError('');
+        if (typeof window !== 'undefined') {
+          if (role === 'user' && body?.user) {
+            window.localStorage.setItem('sessionUser', JSON.stringify(body.user));
+          } else if (role === 'admin') {
+            window.localStorage.removeItem('sessionUser');
+          }
+        }
         form?.reset?.();
         setRole(initialRole);
         router.push(role === 'admin' ? '/admin/dashboard' : '/user/dashboard');
