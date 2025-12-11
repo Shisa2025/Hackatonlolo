@@ -108,7 +108,7 @@ export default function RegisterPage() {
           {error && <div className="text-sm text-red-600">{error}</div>}
 
           <div className="text-center text-sm flex items-center justify-center gap-3 text-red-700">
-            <Link href="/" className="underline hover:text-red-900">
+            <Link href="/mainpage" className="underline hover:text-red-900">
               Back to home
             </Link>
             <span className="text-red-400">•</span>
