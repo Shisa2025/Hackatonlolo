@@ -10,6 +10,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setSubmitting(true);
     setMessage('');
     setError('');
@@ -29,18 +30,19 @@ export default function RegisterPage() {
         body: JSON.stringify(payload),
       });
 
-      const body = await res.json().catch(() => ({}));
+      const text = await res.text();
+      const body = text ? JSON.parse(text) : {};
       if (!res.ok) {
         setError(body?.error || 'Registration failed');
         setMessage('');
       } else {
         setMessage(body?.message || (role === 'admin' ? 'Admin registration successful.' : 'User registration successful.'));
         setError('');
-        e.currentTarget.reset();
+        form?.reset?.();
         setRole('user');
       }
     } catch (err) {
-      setError('Network or server error');
+      setError(err?.message || 'Network or server error');
       setMessage('');
     } finally {
       setSubmitting(false);

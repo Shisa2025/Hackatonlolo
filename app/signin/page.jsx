@@ -1,15 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SignInPage() {
-  const [role, setRole] = useState('user');
+  const router = useRouter();
+  const params = useSearchParams();
+  const initialRole = params.get('role') === 'admin' ? 'admin' : 'user';
+  const [role, setRole] = useState(initialRole);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    setRole(initialRole);
+  }, [initialRole]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setSubmitting(true);
     setMessage('');
     setError('');
@@ -27,18 +36,20 @@ export default function SignInPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const body = await res.json().catch(() => ({}));
+      const text = await res.text();
+      const body = text ? JSON.parse(text) : {};
       if (!res.ok) {
         setError(body?.error || 'Login failed');
         setMessage('');
       } else {
         setMessage(body?.message || (role === 'admin' ? 'Admin login successful.' : 'User login successful.'));
         setError('');
-        e.currentTarget.reset();
-        setRole('user');
+        form?.reset?.();
+        setRole(initialRole);
+        router.push(role === 'admin' ? '/admin/dashboard' : '/user/dashboard');
       }
     } catch (err) {
-      setError('Network or server error');
+      setError(err?.message || 'Network or server error');
       setMessage('');
     } finally {
       setSubmitting(false);
