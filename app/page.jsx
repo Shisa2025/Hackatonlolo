@@ -2,10 +2,67 @@
 
 import Link from 'next/link';
 import {animate, createTimeline} from 'animejs';
+import { useEffect } from 'react';
+
+
 export default function Home() {
+
+  useEffect(() => {
+    const tl = createTimeline({
+      autoplay: true
+    })
+    tl.add('#start1',{
+      delay: 1300,
+      opacity: 1,
+      easing: 'easeOutQuad',
+      duration: 800
+    })
+
+    tl.add('#start2',{
+      opacity: 1,
+      easing: 'easeOutQuad',
+      duration: 800
+    }, '+=1200')
+
+    tl.add('#start1',{
+      opacity: 0,
+      easing: 'easeOutQuad',
+      duration: 800,
+
+    }, '+=1300')
+
+    tl.add('#start2',{
+      opacity: 0,
+      easing: 'easeOutQuad',
+      duration: 800,
+
+    }, '-=800')
+
+    const mainpage = createTimeline({
+      autoplay:true
+    })
+
+    mainpage.add('#page',{
+      backgroundColor: ['#ffffff', '#fef3c7'],
+      duration: 1800,
+      easing: 'easeInOutQuad',
+      autoplay: false,
+      delay: 6200
+    }, '+=1300');
+    mainpage.add('#content',{
+      opacity: 1,
+      duration: 1500,
+      easing: 'easeInOutQuad'
+    }, '-=1300')
+  }, []);
+
   return (
-    <main className="min-h-screen bg-yellow-50 text-red-700 flex items-center justify-center px-6">
-      <div className="max-w-md w-full space-y-6 text-center">
+    
+    <main id='page' className="min-h-screen bg-white text-red-700 flex items-center justify-center px-6">
+      
+      <p id='start2' className='absolute text-center max-w-md w-full text-black text-xl translate-y-[60px] opacity-0'>placeholder</p>
+      <p id='start1' className='absolute text-center max-w-md w-full text-black text-7xl opacity-0'>placeholder</p>
+      <div id='content' className="max-w-md w-full space-y-6 text-center opacity-0">
         <div className="text-xs uppercase tracking-[0.2em] text-red-500 font-semibold">Disaster Simulation</div>
         <h1 className="text-8xl font-bold tracking-tight">Welcome</h1>
         <p className="text-red-500">Choose an action to continue.</p>
