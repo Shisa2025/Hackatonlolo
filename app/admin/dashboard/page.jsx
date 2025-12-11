@@ -1,12 +1,9 @@
 'use client';
 
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import { animate, createTimeline, cubicBezier} from 'animejs';
-
-import {useEffect} from 'react';
-
 
 export default function AdminDashboard() {
   const [clicks, setClicks] = useState(0);
@@ -15,6 +12,7 @@ export default function AdminDashboard() {
   const [secretError, setSecretError] = useState('');
   const router = useRouter();
   const [disabled, setDisabled] = useState(false);
+
   const handleCursorClick = () => {
     const next = clicks + 1;
     if (next >= 7) {
@@ -36,95 +34,92 @@ export default function AdminDashboard() {
     }
   };
 
-
   useEffect(() =>{
-
     const intro = createTimeline({
-    })
+    });
+
     intro.add('#subheading1',{
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    })
+    });
     intro.add('#heading',{
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=700')  // Play at same time as previous animation
+    }, '-=700');
     intro.add('#subheading2',{
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=700')
+    }, '-=700');
     intro.add('#signbutton',{
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=700')
+    }, '-=700');
 
     intro.add('#adminbutton1', {
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
     
     intro.add('#adminbutton2', {
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
 
     intro.add('#adminbutton3', {
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
 
     intro.add('#secretbutton', {
       opacity: [0, 1],
       translateY: [200, 0],
       duration: 800,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
 
     intro.add('#signbutton-text',{
       opacity: [0, 1],
       duration: 600,
       easing: 'easeOutQuad'
-    }, '+=200')
+    }, '+=200');
 
     intro.add('#adminbuttonstext',{
       opacity: [0, 1],
       duration: 600,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
 
     intro.add('#secretimage',{
       opacity: [0, 1],
       duration: 600,
       easing: 'easeOutQuad'
-    }, '-=600')
+    }, '-=600');
     
   }, []);
+
   async function handleSignOut() {
     if (disabled) return;
     setDisabled(true);
 
-    // Optional: call your sign-out endpoint to clear server session
     try {
       await fetch('/signin', { method: 'POST' });
     } catch (err) {
       // continue anyway
     }
-
-    // Animate button up and fade out
 
     const tl = createTimeline({
       autoplay: true
@@ -136,14 +131,10 @@ export default function AdminDashboard() {
       easing: cubicBezier(0.63,0.125,0.815,0.395)
     });
 
-
-
-    // Wait for timeline to finish, then navigate
     setTimeout(() => {
       router.push('/signin?role=admin');
-    }, 1200); // total animation duration
+    }, 1200);
   }
-
 
   return (
     <main className="min-h-screen bg-yellow-50 text-slate-100 px-6 py-10">
