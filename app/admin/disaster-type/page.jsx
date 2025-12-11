@@ -72,25 +72,25 @@ export default function CreateDisasterTypePage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 px-6 py-10 flex justify-center">
+    <main className="min-h-screen bg-yellow-50 text-red-700-100 px-6 py-10 flex justify-center">
       <div className="w-full max-w-2xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Admin</div>
-            <h1 className="text-3xl font-bold tracking-tight">Create Disaster Type</h1>
-            <p className="text-slate-300 text-sm">Add a new disaster type to the system.</p>
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">Admin</div>
+            <h1 className="text-3xl font-bold tracking-tight text-red-700">Create Disaster Type</h1>
+            <p className="text-red-700 font-bold text-sm">Add a new disaster type to the system.</p>
           </div>
-          <Link href="/admin/dashboard" className="text-sm text-slate-200 underline">
+          <Link href="/admin/dashboard" className=" group relative text-sm font-bold text-red-700 no-underline transition-colors duration-200 hover:text-red-500">
             Back to dashboard
           </Link>
         </div>
 
         <form
-          className="space-y-4 bg-slate-900/80 border border-white/10 rounded-2xl p-5 shadow-xl"
+          className="space-y-4 bg-red-700 border border-white/10 rounded-2xl p-5 shadow-xl"
           onSubmit={handleSubmit}
         >
           <div className="space-y-2">
-            <label className="block text-sm text-slate-200">Name</label>
+            <label className="block text-sm text-white font-semibold">Name</label>
             <input
               name="name"
               type="text"
@@ -102,7 +102,7 @@ export default function CreateDisasterTypePage() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm text-slate-200">Description</label>
+            <label className="block text-sm text-red-700">Description</label>
             <textarea
               name="description"
               rows={3}
@@ -114,7 +114,7 @@ export default function CreateDisasterTypePage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 disabled:opacity-70"
+            className="w-full py-3 rounded-xl bg-red-500 text-red-500 font-semibold hover:bg-red-600 disabled:opacity-70"
           >
             {submitting ? 'Creating...' : 'Create Disaster Type'}
           </button>
