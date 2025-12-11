@@ -115,7 +115,7 @@ export default function AdminUsersPage() {
                   <div>
                     <div className="font-semibold">{u.email}</div>
                     <div className="text-slate-400">
-                      Role: {u.role} · Status: {STATUS_LABEL[u.account_status] ?? u.account_status}
+                      Role: {u.role} - Status: {STATUS_LABEL[u.account_status] ?? u.account_status}
                     </div>
                     {u.user_name && <div className="text-slate-500 text-xs">Username: {u.user_name}</div>}
                     <div className="text-slate-500 text-xs">Created: {formatDate(u.created_at)}</div>
@@ -129,6 +129,16 @@ export default function AdminUsersPage() {
                         className="px-3 py-2 rounded-lg border border-red-300/50 text-red-200 hover:border-red-200 disabled:opacity-60"
                       >
                         {updatingId === u.id ? 'Updating...' : 'Set banned'}
+                      </button>
+                    )}
+                    {u.account_status === 'pending' && (
+                      <button
+                        type="button"
+                        disabled={updatingId === u.id}
+                        onClick={() => setStatus(u.id, 'active')}
+                        className="px-3 py-2 rounded-lg border border-emerald-300/50 text-emerald-200 hover:border-emerald-200 disabled:opacity-60"
+                      >
+                        {updatingId === u.id ? 'Updating...' : 'Activate'}
                       </button>
                     )}
                     {u.account_status === 'banned' && (

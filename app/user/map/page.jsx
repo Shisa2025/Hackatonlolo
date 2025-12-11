@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const MapView = dynamic(() => import("./MapView"), { ssr: false });
 
-export default function MapPage() {
+export default function UserMapPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#CBEEF3] text-[#1d1d1d]">
       <header className="p-6 border-b border-[#A31D1D] bg-white shadow-sm">
