@@ -72,15 +72,15 @@ export default function CreateDisasterTypePage() {
   };
 
   return (
-    <main className="min-h-screen bg-yellow-50 text-red-700-100 px-6 py-10 flex justify-center">
+    <main className="min-h-screen bg-yellow-50 text-red-700-100 px-6 py-10 flex justify-center ">
       <div className="w-full max-w-2xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs font-bold uppercase tracking-[0.2em] text-red-700">Admin</div>
+            <div className="text-m font-bold uppercase tracking-[0.2em] text-red-700">Admin</div>
             <h1 className="text-3xl font-bold tracking-tight text-red-700">Create Disaster Type</h1>
-            <p className="text-red-700 font-bold text-sm">Add a new disaster type to the system.</p>
+            <p className="text-red-700 font-bold text-m">Add a new disaster type to the system.</p>
           </div>
-          <Link href="/admin/dashboard" className=" group relative text-sm font-bold text-red-700 no-underline transition-colors duration-200 hover:text-red-500">
+          <Link href="/admin/dashboard" className=" group relative text-m font-bold text-red-700 no-underline transition-colors duration-200 hover:text-red-500">
             Back to dashboard
           </Link>
         </div>
@@ -96,17 +96,17 @@ export default function CreateDisasterTypePage() {
               type="text"
               required
               minLength={2}
-              className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-slate-100"
+              className="w-full p-3 rounded-md bg-white text-black placeholder-gray-500"
               placeholder="e.g., Earthquake"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm text-red-700">Description</label>
+            <label className="block text-sm text-white font-semibold">Description</label>
             <textarea
               name="description"
               rows={3}
-              className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-slate-100"
+              className="w-full p-3 rounded-md bg-white text-black placeholder-gray-500"
               placeholder="Optional notes"
             />
           </div>
@@ -114,7 +114,7 @@ export default function CreateDisasterTypePage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 rounded-xl bg-red-500 text-red-500 font-semibold hover:bg-red-600 disabled:opacity-70"
+            className="w-full p-3 rounded-md bg-white text-black placeholder-gray-500 font-bold"
           >
             {submitting ? 'Creating...' : 'Create Disaster Type'}
           </button>
@@ -123,16 +123,16 @@ export default function CreateDisasterTypePage() {
           {error && <div className="text-sm text-red-300">{error}</div>}
         </form>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl space-y-3">
-          <div className="text-sm font-semibold">Existing disaster types</div>
-          {loadingTypes && <div className="text-sm text-slate-400">Loading...</div>}
-          {!loadingTypes && types.length === 0 && <div className="text-sm text-slate-400">No disaster types yet.</div>}
+        <div className="rounded-2xl border border-white/10 bg-red-700 p-5 shadow-xl space-y-3">
+          <div className="text-m font-semibold text-white">Existing disaster types</div>
+          {loadingTypes && <div className="text-sm text-red-700">Loading...</div>}
+          {!loadingTypes && types.length === 0 && <div className="text-sm text-red-700">No disaster types yet.</div>}
           {!loadingTypes && types.length > 0 && (
             <div className="space-y-2 text-sm">
               {types.map((t) => (
                 <div key={t.id ?? t.name} className="rounded-lg border border-white/10 bg-white/5 px-3 py-2">
                   <div className="font-semibold">{t.name}</div>
-                  {t.description && <div className="text-slate-400">{t.description}</div>}
+                  {t.description && <div className="text-gray-400">{t.description}</div>}
                 </div>
               ))}
             </div>
