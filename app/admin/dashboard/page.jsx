@@ -1,8 +1,26 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function AdminDashboard() {
+  const router = useRouter();
+  const [tapCount, setTapCount] = useState(0);
+
+  const handleKaijuTap = () => {
+    const next = tapCount + 1;
+    if (next >= 7) {
+      setTapCount(0);
+      const key = window.prompt('Enter keyword to proceed:');
+      if (key === 'kaijuGo') {
+        router.push('/kaiju');
+      }
+    } else {
+      setTapCount(next);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 px-6 py-10">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -49,6 +67,15 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </div>
+      <button
+        type="button"
+        aria-label="Hidden kaiju access"
+        onClick={handleKaijuTap}
+        className="fixed right-4 bottom-4 h-12 w-12 rounded-full border border-white/20 bg-white/10 text-lg text-slate-100 opacity-60 hover:opacity-100 shadow-[0_0_0_6px_rgba(255,255,255,0.08)] transition"
+        title=" "
+      >
+        ☄️
+      </button>
     </main>
   );
 }
