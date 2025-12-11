@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function RegisterPage() {
   const [role, setRole] = useState('user');
@@ -133,6 +134,12 @@ export default function RegisterPage() {
 
           {message && <div className="text-sm text-emerald-300">{message}</div>}
           {error && <div className="text-sm text-red-300">{error}</div>}
+
+          <div className="text-center text-sm">
+            <Link href="/" className="text-slate-300 underline hover:text-white">
+              Back to home
+            </Link>
+          </div>
         </form>
       </div>
     </main>

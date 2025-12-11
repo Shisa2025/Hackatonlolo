@@ -22,6 +22,15 @@ export default function AdminDashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link
+            href="/admin/users"
+            className="rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-white/30 transition space-y-2"
+          >
+            <div className="text-sm uppercase tracking-[0.14em] text-slate-300">Manage</div>
+            <div className="text-xl font-semibold">User management</div>
+            <p className="text-sm text-slate-400">Review users and update pending accounts.</p>
+          </Link>
+
+          <Link
             href="/admin/disaster-type"
             className="rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-white/30 transition space-y-2"
           >

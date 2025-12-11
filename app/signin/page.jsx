@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function SignInPage() {
@@ -125,6 +126,12 @@ export default function SignInPage() {
 
           {message && <div className="text-sm text-emerald-300">{message}</div>}
           {error && <div className="text-sm text-red-300">{error}</div>}
+
+          <div className="text-center text-sm">
+            <Link href="/" className="text-slate-300 underline hover:text-white">
+              Back to home
+            </Link>
+          </div>
         </form>
       </div>
     </main>
