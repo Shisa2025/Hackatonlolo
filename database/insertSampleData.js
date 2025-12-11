@@ -29,8 +29,8 @@ async function main() {
   ];
 
   const disasterTypes = [
-    { name: 'Earthquake', description: 'Seismic event' },
-    { name: 'Flood', description: 'Flooding incident' },
+    { name: 'Earthquake', description: 'Seismic event', emoji: '🌎', emoji_cursor: 'earthquake' },
+    { name: 'Flood', description: 'Flooding incident', emoji: '🌊', emoji_cursor: 'water_wave' },
   ];
 
   const disasters = [
@@ -100,10 +100,10 @@ async function main() {
     // disaster types
     for (const dt of disasterTypes) {
       await pool.query(
-        `INSERT INTO disaster_type (name, description)
-         VALUES ($1, $2)
-         ON CONFLICT (name) DO UPDATE SET description = EXCLUDED.description`,
-        [dt.name, dt.description],
+        `INSERT INTO disaster_type (name, description, emoji, emoji_cursor)
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (name) DO UPDATE SET description = EXCLUDED.description, emoji = EXCLUDED.emoji, emoji_cursor = EXCLUDED.emoji_cursor`,
+        [dt.name, dt.description, dt.emoji, dt.emoji_cursor],
       );
       console.log(`Upserted disaster type: ${dt.name}`);
     }
