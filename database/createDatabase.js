@@ -122,6 +122,10 @@ async function main() {
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'disaster_severity') THEN
           CREATE TYPE disaster_severity AS ENUM ('low', 'medium', 'high');
         END IF;
+
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'disaster_status') THEN
+          CREATE TYPE disaster_status AS ENUM ('unverified', 'verified', 'fake');
+        END IF;
       END
       $$;
 
@@ -131,6 +135,7 @@ async function main() {
         title TEXT NOT NULL,
         description TEXT,
         severity disaster_severity NOT NULL DEFAULT 'low',
+        status disaster_status NOT NULL DEFAULT 'unverified',
         location TEXT,
         lat DOUBLE PRECISION,
         lng DOUBLE PRECISION,
