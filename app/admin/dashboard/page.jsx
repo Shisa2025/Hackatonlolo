@@ -77,6 +77,14 @@ export default function AdminDashboard() {
                 </div>
               ))}
             </div>
+            <div className="pt-2">
+              <Link
+                href="/admin/disaster-type"
+                className="inline-flex px-4 py-2 rounded-xl border border-white/20 text-sm hover:border-white/40"
+              >
+                Disaster type management
+              </Link>
+            </div>
           </div>
         </div>
       </div>
