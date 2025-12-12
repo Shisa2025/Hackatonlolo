@@ -59,15 +59,48 @@ export async function PATCH(req) {
   if (!id || !Number.isInteger(id)) return badRequest('Invalid id');
   if (!ALLOWED_STATUS.has(status)) return badRequest('Invalid status');
 
+  const client = await pool.connect();
   try {
-    const { rowCount, rows } = await pool.query(
-      `UPDATE disaster SET status = $1 WHERE id = $2 RETURNING id, title, status`,
+    await client.query('BEGIN');
+
+    const updateRes = await client.query(
+      `UPDATE disaster SET status = $1 WHERE id = $2 RETURNING id, title, status, reported_by`,
       [status, id],
     );
-    if (rowCount === 0) return badRequest('Disaster not found');
-    return NextResponse.json({ disaster: rows[0], message: 'Disaster status updated.' }, { status: 200 });
+    if (updateRes.rowCount === 0) {
+      await client.query('ROLLBACK');
+      return badRequest('Disaster not found');
+    }
+
+    const disasterRow = updateRes.rows[0];
+
+    if (status === 'fake' && disasterRow.reported_by) {
+      // Count fake disasters created by this user
+      const { rows: fakeCounts } = await client.query(
+        `SELECT COUNT(*)::int AS fake_count
+         FROM disaster
+         WHERE reported_by = $1 AND status = 'fake'`,
+        [disasterRow.reported_by],
+      );
+      const fakeCount = fakeCounts[0]?.fake_count ?? 0;
+      if (fakeCount >= 3) {
+        await client.query(
+          `UPDATE "user" SET account_status = 'pending' WHERE id = $1 AND account_status <> 'banned'`,
+          [disasterRow.reported_by],
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+    return NextResponse.json(
+      { disaster: { id: disasterRow.id, title: disasterRow.title, status: disasterRow.status }, message: 'Disaster status updated.' },
+      { status: 200 },
+    );
   } catch (err) {
+    await client.query('ROLLBACK');
     console.error('Update disaster status error:', err);
     return NextResponse.json({ error: err?.message || 'Internal error' }, { status: 500 });
+  } finally {
+    client.release();
   }
 }

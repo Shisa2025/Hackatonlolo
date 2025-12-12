@@ -126,10 +126,11 @@ async function main() {
         continue;
       }
       const disasterTypeId = typeRes.rows[0].id;
+      const reportedBy = userRes.rows[0].id;
       await pool.query(
-        `INSERT INTO disaster (disaster_type_id, title, description, severity, status, location, lat, lng)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [disasterTypeId, d.title, d.description, d.severity, d.status, d.location, d.lat, d.lng],
+        `INSERT INTO disaster (disaster_type_id, title, description, severity, status, location, lat, lng, reported_by)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+        [disasterTypeId, d.title, d.description, d.severity, d.status, d.location, d.lat, d.lng, reportedBy],
       );
       console.log(`Inserted disaster: ${d.title}`);
     }

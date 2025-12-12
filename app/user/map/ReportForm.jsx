@@ -5,12 +5,25 @@ import { useEffect, useState } from "react";
 const severities = ["low", "medium", "high"];
 
 export default function ReportForm({ position, onClose }) {
+  const [userId, setUserId] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [severity, setSeverity] = useState(severities[1]);
   const [status, setStatus] = useState(null); // { type: "success" | "error", message: string }
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem("sessionUser");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.id) setUserId(parsed.id);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -46,6 +59,7 @@ export default function ReportForm({ position, onClose }) {
       severity,
       lat: position.lat,
       lng: position.lng,
+      userId,
     };
 
     try {

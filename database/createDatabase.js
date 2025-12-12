@@ -159,9 +159,21 @@ async function main() {
         location TEXT,
         lat DOUBLE PRECISION,
         lng DOUBLE PRECISION,
+        reported_by INTEGER REFERENCES "user"(id) ON DELETE SET NULL,
         occurred_at TIMESTAMPTZ NOT NULL DEFAULT now(),
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       );
+
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'disaster' AND column_name = 'reported_by'
+        ) THEN
+          ALTER TABLE disaster ADD COLUMN reported_by INTEGER REFERENCES "user"(id) ON DELETE SET NULL;
+        END IF;
+      END
+      $$;
     `;
 
     await dbPool.query(createAdmin);
