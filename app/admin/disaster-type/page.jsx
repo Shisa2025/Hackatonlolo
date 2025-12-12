@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Picker from '@emoji-mart/react';
 import emojiData from '@emoji-mart/data';
 import Link from 'next/link';
-
+import { animate, createTimeline } from 'animejs';
 export default function CreateDisasterTypePage() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
@@ -35,6 +35,14 @@ export default function CreateDisasterTypePage() {
 
   useEffect(() => {
     loadTypes();
+    const tl = createTimeline({
+      autoplay:true
+    })
+
+    tl.add('#all', {
+      opacity: [0, 1],
+      translateY: [200, 0]
+    })
   }, []);
 
   const handleSubmit = async (e) => {
@@ -81,7 +89,7 @@ export default function CreateDisasterTypePage() {
 
   return (
     <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10 flex justify-center">
-      <div className="w-full max-w-6xl space-y-6">
+      <div id='all' className="w-full max-w-6xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-xs font-medium uppercase tracking-[0.15em] text-red-900">Admin</div>

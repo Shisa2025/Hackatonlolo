@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {anime, createTimeline} from 'animejs';
 
 const STATUS_LABEL = {
   active: 'Active',
@@ -65,6 +66,14 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     loadUsers();
+    const tl = createTimeline({
+      autoplay:true
+    })
+
+    tl.add('#all',{
+      opacity: [0,1],
+      translateY: [200, 0]
+    })
   }, []);
 
   const setStatus = async (id, status) => {
@@ -110,7 +119,7 @@ export default function AdminUsersPage() {
 
   return (
     <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10 flex justify-center">
-      <div className="w-full max-w-5xl space-y-6">
+      <div id='all' className="w-full max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-l font-bold uppercase tracking-[0.2em] text-red-800">Admin</div>

@@ -3,14 +3,15 @@
 import {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { createTimeline } from 'animejs';
-
+import {useRouter} from 'next/navigation';
 
 export default function AdminDashboard() {
   const [clicks, setClicks] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [secretInput, setSecretInput] = useState('');
   const [secretError, setSecretError] = useState('');
-
+  const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
   const handleCursorClick = () => {
     const next = clicks + 1;
     if (next >= 7) {
@@ -96,6 +97,84 @@ export default function AdminDashboard() {
     
   }, []);
 
+  async function handleUser() {
+    if (disabled) return;
+    setDisabled(true);
+
+    // Optional: call your sign-out endpoint to clear server session
+    try {
+      await fetch('/info', { method: 'POST' });
+    } catch (err) {
+      // continue anyway
+    }
+    const user = createTimeline({
+      autoplay: true
+    });
+    user.add('#all',{
+      translateY: [0, -200],
+      opacity:0,
+      delay: 200,
+      duration: 400,
+      easing: 'easeInOutQuad'
+    })
+
+    setTimeout(() =>{
+      router.push('/admin/users');
+    }, 650);
+    }
+
+  async function handleDisaster() {
+    if (disabled) return;
+    setDisabled(true);
+
+    // Optional: call your sign-out endpoint to clear server session
+    try {
+      await fetch('/info', { method: 'POST' });
+    } catch (err) {
+      // continue anyway
+    }
+    const user = createTimeline({
+      autoplay: true
+    });
+    user.add('#all',{
+      translateY: [0, -200],
+      opacity:0,
+      delay: 200,
+      duration: 400,
+      easing: 'easeInOutQuad'
+    })
+
+    setTimeout(() =>{
+      router.push('/admin/disasters');
+    }, 650);
+    }
+
+    async function handleDisasterType() {
+    if (disabled) return;
+    setDisabled(true);
+
+    // Optional: call your sign-out endpoint to clear server session
+    try {
+      await fetch('/info', { method: 'POST' });
+    } catch (err) {
+      // continue anyway
+    }
+    const user = createTimeline({
+      autoplay: true
+    });
+    user.add('#all',{
+      translateY: [0, -200],
+      opacity:0,
+      delay: 200,
+      duration: 400,
+      easing: 'easeInOutQuad'
+    })
+
+    setTimeout(() =>{
+      router.push('/admin/disaster-type');
+    }, 650);
+    }
+
   return (
     <main className="min-h-screen bg-yellow-50 text-slate-100 px-6 py-10">
       <div id='all' className="max-w-6xl mx-auto space-y-6">
@@ -108,9 +187,11 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
-          <Link
-            href="/admin/users"
+          <button
             id='adminbutton1'
+            onClick={handleUser}
+            disabled={disabled}
+            aria-busy={disabled}
             className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 opacity-0"
           >
             <div className="h-20 bg-gradient-to-r from-red-700 to-red-600 flex items-center px-4">
@@ -131,10 +212,13 @@ export default function AdminDashboard() {
                 </svg>
               </div>
             </div>
-          </Link>
+          </button>
 
-          <Link
+          <button
             href="/admin/disaster-type"
+            onClick={handleDisasterType}
+            disabled={disabled}
+            aria-busy={disabled}
             id='adminbutton2'
             className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 opacity-0"
           >
@@ -159,10 +243,12 @@ export default function AdminDashboard() {
                 </svg>
               </div>
             </div>
-          </Link>
+          </button>
 
-          <Link
-            href="/admin/disasters"
+          <button
+            onClick={handleDisaster}
+            disabled={disabled}
+            aria-busy={disabled}
             id='adminbutton3'
             className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 opacity-0"
           >
@@ -184,7 +270,7 @@ export default function AdminDashboard() {
                 </svg>
               </div>
             </div>
-          </Link>
+          </button>
         </div>
       </div>
       <button
