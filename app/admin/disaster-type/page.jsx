@@ -80,13 +80,13 @@ export default function CreateDisasterTypePage() {
   };
 
   return (
-    <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10 flex justify-center ">
-      <div className="w-full max-w-2xl space-y-6">
+    <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10 flex justify-center">
+      <div className="w-full max-w-6xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-m font-bold uppercase tracking-[0.2em] text-red-800">Admin</div>
-            <h1 className="text-3xl font-bold tracking-tight text-red-700">Create Disaster Type</h1>
-            <p className="text-red-800 font-semibold text-m">Add a new disaster type to the system.</p>
+            <div className="text-xs font-medium uppercase tracking-[0.15em] text-red-900">Admin</div>
+            <h1 className="text-7xl font-bold tracking-tight text-red-700">Create Disaster Type</h1>
+            <p className="text-red-900 font-semibold text-m font-medium">Add a new disaster type to the system.</p>
           </div>
         </div>
 

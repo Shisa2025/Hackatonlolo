@@ -204,7 +204,7 @@ export default function AdminDisasterTypesPage() {
             </div>
             <h1
               id="disaster-heading"
-              className="text-4xl font-bold tracking-tight text-red-700 opacity-0"
+              className="text-7xl font-bold tracking-tight text-red-700 opacity-0"
             >
               Disaster Management
             </h1>
