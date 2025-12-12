@@ -1,10 +1,15 @@
-const mockCategories = [
-  { id: 1, name: "Earthquake", description: "Ground shaking", icon: "🌏" },
-  { id: 2, name: "Fire", description: "Structural or wild fire", icon: "🔥" },
-  { id: 3, name: "Flood", description: "Water, road blocked", icon: "🌊" },
-  { id: 4, name: "Sinkhole", description: "Ground collapse", icon: "🕳️" },
-];
+import { run } from "../../../../database/client.js";
 
 export async function GET() {
-  return Response.json(mockCategories);
+  try {
+    const { rows } = await run(
+      `SELECT id, name, description, COALESCE(emoji, emoji_cursor) AS icon
+       FROM disaster_type
+       ORDER BY id ASC;`,
+    );
+    return Response.json(rows);
+  } catch (err) {
+    console.error("GET /api/user/categories failed:", err.message);
+    return Response.json({ error: "Failed to load categories" }, { status: 500 });
+  }
 }

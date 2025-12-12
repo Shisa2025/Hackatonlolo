@@ -41,6 +41,8 @@ async function main() {
       severity: 'medium',
       status: 'unverified',
       location: 'Downtown',
+      lat: 1.29027,
+      lng: 103.851959,
       typeName: 'Earthquake',
       userEmail: 'shisa1@example.com',
     },
@@ -50,6 +52,8 @@ async function main() {
       severity: 'low',
       status: 'unverified',
       location: 'Industrial zone',
+      lat: 1.321,
+      lng: 103.695,
       typeName: 'Earthquake',
       userEmail: 'shisa1@example.com',
     },
@@ -59,6 +63,8 @@ async function main() {
       severity: 'medium',
       status: 'unverified',
       location: 'Riverside',
+      lat: 1.3644,
+      lng: 103.9915,
       typeName: 'Flood',
       userEmail: 'shisa2@example.com',
     },
@@ -68,6 +74,8 @@ async function main() {
       severity: 'low',
       status: 'unverified',
       location: 'Levee district',
+      lat: 1.3525,
+      lng: 103.708,
       typeName: 'Flood',
       userEmail: 'shisa2@example.com',
     },
@@ -119,9 +127,9 @@ async function main() {
       }
       const disasterTypeId = typeRes.rows[0].id;
       await pool.query(
-        `INSERT INTO disaster (disaster_type_id, title, description, severity, status, location)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-        [disasterTypeId, d.title, d.description, d.severity, d.status, d.location],
+        `INSERT INTO disaster (disaster_type_id, title, description, severity, status, location, lat, lng)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [disasterTypeId, d.title, d.description, d.severity, d.status, d.location, d.lat, d.lng],
       );
       console.log(`Inserted disaster: ${d.title}`);
     }

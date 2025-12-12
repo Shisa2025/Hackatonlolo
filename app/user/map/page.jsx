@@ -16,7 +16,7 @@ export default function UserMapPage() {
           Singapore Disaster Map
         </h1>
         <p className="text-sm text-[#6D2323] mt-1">
-          Pick a spot to report an incident (coming soon)
+          Pick a spot to report an incident and submit it to the disaster database.
         </p>
       </header>
 
