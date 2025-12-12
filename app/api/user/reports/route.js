@@ -72,6 +72,23 @@ export async function POST(request) {
       );
     }
 
+    const { rows: userRows } = await run(
+      `SELECT id, account_status FROM "user" WHERE id = $1 LIMIT 1;`,
+      [reportedBy],
+    );
+    if (userRows.length === 0) {
+      return Response.json(
+        { success: false, error: "Unauthorized: please sign in again." },
+        { status: 401 },
+      );
+    }
+    if (userRows[0].account_status === "banned") {
+      return Response.json(
+        { success: false, error: "Account banned. Reporting is not allowed." },
+        { status: 403 },
+      );
+    }
+
     const insertSql = `
       INSERT INTO disaster (disaster_type_id, title, description, severity, status, lat, lng, reported_by)
       VALUES ($1, $2, $3, $4, 'unverified', $5, $6, $7)
