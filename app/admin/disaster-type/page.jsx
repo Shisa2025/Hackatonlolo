@@ -88,9 +88,6 @@ export default function CreateDisasterTypePage() {
             <h1 className="text-3xl font-bold tracking-tight text-red-700">Create Disaster Type</h1>
             <p className="text-red-700 font-bold text-m">Add a new disaster type to the system.</p>
           </div>
-          <Link href="/admin/dashboard" className=" group relative text-l font-bold text-red-700 no-underline transition-colors duration-200 hover:text-red-500">
-            Back to dashboard
-          </Link>
         </div>
 
         <form

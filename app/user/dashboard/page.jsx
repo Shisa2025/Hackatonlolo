@@ -86,38 +86,32 @@ export default function UserDashboard() {
   const canCreate = Boolean(userInfo?.can_create_disaster ?? status === 'active');
 
   return (
-    <main className="min-h-screen bg-[#CBEEF3] text-[#1d1d1d] px-6 py-10">
+    <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-[#6D2323]">User Dashboard</div>
-            <h1 className="text-3xl font-bold tracking-tight text-[#A31D1D]">Your Overview</h1>
-            <p className="text-sm text-[#6D2323]">Account status and recent disaster activity.</p>
+            <div className="text-xs uppercase tracking-[0.2em] text-red-800">User Dashboard</div>
+            <h1 className="text-3xl font-bold tracking-tight text-red-700">Your Overview</h1>
+            <p className="text-sm text-red-800">Account status and recent disaster activity.</p>
           </div>
-          <Link
-            href="/signin?role=user"
-            className="px-4 py-2 rounded-xl border border-[#E5D0AC] text-sm text-[#A31D1D] bg-white shadow-sm hover:bg-[#FFF8E1]"
-          >
-            Sign out / switch
-          </Link>
         </div>
 
-        <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm">
-          <div className="text-xs uppercase tracking-[0.14em] text-[#6D2323]">Account</div>
-          <div className="text-xl font-semibold mt-1 text-[#A31D1D]">{userInfo?.user_name || 'User name unavailable'}</div>
-          <div className="text-sm text-[#6D2323]">{userInfo?.email || 'Email unavailable'}</div>
+        <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm">
+          <div className="text-xs uppercase tracking-[0.14em] text-red-800">Account</div>
+          <div className="text-xl font-semibold mt-1 text-red-700">{userInfo?.user_name || 'User name unavailable'}</div>
+          <div className="text-sm text-red-800">{userInfo?.email || 'Email unavailable'}</div>
         </div>
 
         {statusMessage && (
-          <div className="rounded-xl border border-[#E5D0AC] bg-[#FFF8E1] px-4 py-3 text-sm text-[#6D2323] shadow-sm">
+          <div className="rounded-xl border border-red-200/70 bg-amber-50 px-4 py-3 text-sm text-red-800 shadow-sm">
             {statusMessage}
           </div>
         )}
 
-        <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="text-sm font-semibold text-[#A31D1D]">Report a disaster</div>
-            <div className="text-xs text-[#6D2323]">
+            <div className="text-sm font-semibold text-red-700">Report a disaster</div>
+            <div className="text-xs text-red-800">
               {canCreate
                 ? 'Ready to file a new incident.'
                 : status === 'banned'
@@ -128,7 +122,7 @@ export default function UserDashboard() {
           {canCreate ? (
             <Link
               href="/user/map"
-              className="px-4 py-2 rounded-xl text-sm font-semibold transition bg-[#A31D1D] text-white shadow hover:bg-[#880D1E]"
+              className="px-4 py-2 rounded-xl text-sm font-semibold transition bg-red-700 text-white shadow hover:bg-red-600"
               title="Open the map to file a report"
             >
               Open map to report
@@ -137,7 +131,7 @@ export default function UserDashboard() {
             <button
               type="button"
               disabled
-              className="px-4 py-2 rounded-xl text-sm font-semibold bg-[#E5D0AC] text-[#6D2323] cursor-not-allowed"
+              className="px-4 py-2 rounded-xl text-sm font-semibold bg-red-200 text-red-800 cursor-not-allowed"
               title="Awaiting approval to create incidents"
             >
               Creation locked
@@ -146,50 +140,50 @@ export default function UserDashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm">
-            <div className="text-xs uppercase tracking-[0.14em] text-[#6D2323]">Status</div>
-            <div className="text-2xl font-bold capitalize text-[#A31D1D]">{status}</div>
-            <div className="text-sm text-[#6D2323]">Account status</div>
+          <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm">
+            <div className="text-xs uppercase tracking-[0.14em] text-red-800">Status</div>
+            <div className="text-2xl font-bold capitalize text-red-700">{status}</div>
+            <div className="text-sm text-red-800">Account status</div>
           </div>
-          <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm">
-            <div className="text-xs uppercase tracking-[0.14em] text-[#6D2323]">Role</div>
-            <div className="text-2xl font-bold capitalize text-[#A31D1D]">{role}</div>
-            <div className="text-sm text-[#6D2323]">Assigned role</div>
+          <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm">
+            <div className="text-xs uppercase tracking-[0.14em] text-red-800">Role</div>
+            <div className="text-2xl font-bold capitalize text-red-700">{role}</div>
+            <div className="text-sm text-red-800">Assigned role</div>
           </div>
-          <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm">
-            <div className="text-xs uppercase tracking-[0.14em] text-[#6D2323]">Events</div>
-            <div className="text-2xl font-bold text-[#A31D1D]">{recent.length}</div>
-            <div className="text-sm text-[#6D2323]">Recent disaster items</div>
+          <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm">
+            <div className="text-xs uppercase tracking-[0.14em] text-red-800">Events</div>
+            <div className="text-2xl font-bold text-red-700">{recent.length}</div>
+            <div className="text-sm text-red-800">Recent disaster items</div>
           </div>
         </div>
 
         <DisasterMap />
 
-        <div className="rounded-2xl border border-[#E5D0AC] bg-white p-4 shadow-sm space-y-3">
-          <div className="text-sm font-semibold text-[#A31D1D]">Recent disasters</div>
+        <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-sm space-y-3">
+          <div className="text-sm font-semibold text-red-700">Recent disasters</div>
           {recentError ? (
-            <div className="rounded-lg border border-[#E5D0AC] bg-[#FFF8E1] px-3 py-2 text-sm text-[#A31D1D]">
+            <div className="rounded-lg border border-red-200/70 bg-amber-50 px-3 py-2 text-sm text-red-700">
               {recentError}
             </div>
           ) : recent.length === 0 ? (
-            <div className="rounded-lg border border-[#E5D0AC] bg-[#FFF8E1] px-3 py-2 text-sm text-[#6D2323]">
+            <div className="rounded-lg border border-red-200/70 bg-amber-50 px-3 py-2 text-sm text-red-800">
               No disasters to show yet.
             </div>
           ) : (
-            <div className="space-y-2 text-sm text-[#1d1d1d]">
+            <div className="space-y-2 text-sm text-red-900">
               {recent.map((d) => (
-                <div key={d.id} className="rounded-lg border border-[#E5D0AC] bg-[#FFF8E1] px-3 py-2 flex justify-between">
+                <div key={d.id} className="rounded-lg border border-red-200/70 bg-amber-50 px-3 py-2 flex justify-between">
                   <div>
-                    <div className="font-semibold text-[#A31D1D] flex items-center gap-2">
+                    <div className="font-semibold text-red-700 flex items-center gap-2">
                       <span>{d.icon || '!'}</span>
                       {d.title}
                     </div>
-                    <div className="text-[#6D2323]">Severity: {d.severity}</div>
-                    <div className="text-[#6D2323] text-xs">
+                    <div className="text-red-800">Severity: {d.severity}</div>
+                    <div className="text-red-800 text-xs">
                       {d.disaster_type_name || 'Disaster'} - {formatDate(d.occurred_at || d.created_at)}
                     </div>
                   </div>
-                  <div className="text-[#6D2323] text-xs text-right">
+                  <div className="text-red-800 text-xs text-right">
                     {typeof d.lat === 'number' && typeof d.lng === 'number'
                       ? `${d.lat.toFixed(3)}, ${d.lng.toFixed(3)}`
                       : 'No coords'}
@@ -203,6 +197,4 @@ export default function UserDashboard() {
     </main>
   );
 }
-
-
 

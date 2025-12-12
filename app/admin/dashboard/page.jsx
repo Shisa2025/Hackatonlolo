@@ -2,8 +2,7 @@
 
 import {useState, useEffect} from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation';
-import { animate, createTimeline, cubicBezier} from 'animejs';
+import { createTimeline } from 'animejs';
 
 
 export default function AdminDashboard() {
@@ -11,8 +10,6 @@ export default function AdminDashboard() {
   const [showModal, setShowModal] = useState(false);
   const [secretInput, setSecretInput] = useState('');
   const [secretError, setSecretError] = useState('');
-  const router = useRouter();
-  const [disabled, setDisabled] = useState(false);
 
   const handleCursorClick = () => {
     const next = clicks + 1;
@@ -57,13 +54,6 @@ export default function AdminDashboard() {
       duration: 800,
       easing: 'easeOutQuad'
     }, '-=700');
-    intro.add('#signbutton',{
-      opacity: [0, 1],
-      translateY: [200, 0],
-      duration: 800,
-      easing: 'easeOutQuad'
-    }, '-=700');
-
     intro.add('#adminbutton1', {
       opacity: [0, 1],
       translateY: [200, 0],
@@ -92,12 +82,6 @@ export default function AdminDashboard() {
       easing: 'easeOutQuad'
     }, '-=600');
 
-    intro.add('#signbutton-text',{
-      opacity: [0, 1],
-      duration: 600,
-      easing: 'easeOutQuad'
-    }, '+=200');
-
     intro.add('#adminbuttonstext',{
       opacity: [0, 1],
       duration: 600,
@@ -112,31 +96,6 @@ export default function AdminDashboard() {
     
   }, []);
 
-  async function handleSignOut() {
-    if (disabled) return;
-    setDisabled(true);
-
-    try {
-      await fetch('/signin', { method: 'POST' });
-    } catch (err) {
-      // continue anyway
-    }
-
-    const tl = createTimeline({
-      autoplay: true
-    });
-
-    tl.add('#all',{
-      opacity: [1, 0],
-      duration: 800,
-      easing: cubicBezier(0.63,0.125,0.815,0.395)
-    });
-
-    setTimeout(() => {
-      router.push('/signin?role=admin');
-    }, 1200);
-  }
-
   return (
     <main className="min-h-screen bg-yellow-50 text-slate-100 px-6 py-10">
       <div id='all' className="max-w-6xl mx-auto space-y-6">
@@ -146,46 +105,85 @@ export default function AdminDashboard() {
             <h1 id='heading' className="text-7xl font-bold tracking-tight text-red-700 py-2 opacity-0">Control Panel</h1>
             <p id='subheading2' className="text-red-900 text-m py-2 font-medium translate-x-12 opacity-0">Manage users and review disaster records.</p>
           </div>
-          <button
-            id="signbutton"
-            onClick={handleSignOut}
-            disabled={disabled}
-            aria-busy={disabled}
-            className="px-4 py-2 rounded-xl border border-white/20 bg-red-700 text-sm hover:bg-red-400 hover:text-white hover:shadow-2xl font-medium opacity-0"
-          >
-            <span id='signbutton-text' className="opacity-0">Sign out / switch</span>
-          </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
           <Link
             href="/admin/users"
             id='adminbutton1'
-            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
+            className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 transition transform duration-200 ease-out opacity-0"
           >
-            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
-            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">User management</div>
-            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Review users and update pending accounts.</p>
+            <div className="h-20 bg-gradient-to-r from-red-700 to-red-600 flex items-center px-4">
+              <div className="h-10 w-10 rounded-xl bg-white/15 text-white flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M16 14a4 4 0 10-8 0m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2v-2m8 0v-1a4 4 0 10-8 0v1" />
+                </svg>
+              </div>
+            </div>
+            <div className="px-5 py-4 space-y-2 text-red-900">
+              <div id='adminbuttonstext' className="text-xs uppercase tracking-[0.1em] text-red-700/80 opacity-0">Manage</div>
+              <div className="text-2xl font-semibold">User management</div>
+              <p className="text-sm text-red-800/80 font-medium">Review accounts, update statuses and manage roles.</p>
+              <div className="flex items-center gap-1 text-sm font-semibold text-red-700/80 group-hover:text-red-700 pt-1">
+                <span>View</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
           </Link>
 
           <Link
             href="/admin/disaster-type"
             id='adminbutton2'
-            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
+            className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 transition transform duration-200 ease-out opacity-0"
           >
-            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
-            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">Create disaster types</div>
-            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Create and maintain disaster types.</p>
+            <div className="h-20 bg-gradient-to-r from-red-700 to-red-600 flex items-center px-4">
+              <div className="h-10 w-10 rounded-xl bg-white/15 text-white flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M7 8h10M7 12h10M7 16h10" />
+                  <circle cx="6" cy="8" r="0.5" fill="currentColor" />
+                  <circle cx="6" cy="12" r="0.5" fill="currentColor" />
+                  <circle cx="6" cy="16" r="0.5" fill="currentColor" />
+                </svg>
+              </div>
+            </div>
+            <div className="px-5 py-4 space-y-2 text-red-900">
+              <div id='adminbuttonstext' className="text-xs uppercase tracking-[0.1em] text-red-700/80 opacity-0">Manage</div>
+              <div className="text-2xl font-semibold">Create disaster types</div>
+              <p className="text-sm text-red-800/80 font-medium">Create and maintain disaster categories and emojis.</p>
+              <div className="flex items-center gap-1 text-sm font-semibold text-red-700/80 group-hover:text-red-700 pt-1">
+                <span>View</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
           </Link>
 
           <Link
             href="/admin/disasters"
             id='adminbutton3'
-            className="group rounded-2xl border border-white/10 bg-red-700 p-5 hover:bg-red-400 hover:shadow-2xl opacity-0 space-y-2"
+            className="group relative overflow-hidden rounded-2xl border border-red-200/50 bg-amber-50 shadow-md hover:shadow-2xl hover:-translate-y-1 transition transform duration-200 ease-out opacity-0"
           >
-            <div id='adminbuttonstext' className="text-sm uppercase tracking-[0.1em] text-white/80 group-hover:text-white/80 opacity-0">Manage</div>
-            <div id='adminbuttonstext' className="text-xl font-semibold group-hover:text-white opacity-0">Disaster management</div>
-            <p id='adminbuttonstext' className="text-sm text-white/80 font-medium group-hover:text-white/80 opacity-0">Review disasters and update status.</p>
+            <div className="h-20 bg-gradient-to-r from-red-700 to-red-600 flex items-center px-4">
+              <div className="h-10 w-10 rounded-xl bg-white/15 text-white flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M12 9v3.5m0 3h.01M4.5 18h15a.75.75 0 00.67-1.08l-7.5-14.77a.75.75 0 00-1.34 0L3.83 16.92A.75.75 0 004.5 18z" />
+                </svg>
+              </div>
+            </div>
+            <div className="px-5 py-4 space-y-2 text-red-900">
+              <div id='adminbuttonstext' className="text-xs uppercase tracking-[0.1em] text-red-700/80 opacity-0">Manage</div>
+              <div className="text-2xl font-semibold">Disaster management</div>
+              <p className="text-sm text-red-800/80 font-medium">Review disasters and update status.</p>
+              <div className="flex items-center gap-1 text-sm font-semibold text-red-700/80 group-hover:text-red-700 pt-1">
+                <span>View</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
           </Link>
         </div>
       </div>

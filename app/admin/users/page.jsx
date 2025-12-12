@@ -117,9 +117,6 @@ export default function AdminUsersPage() {
             <h1 className="text-3xl font-bold tracking-tight text-red-700">User management</h1>
             <p className="text-red-700 font-bold text-l">Review users and resolve pending accounts.</p>
           </div>
-          <Link href="/admin/dashboard" className=" group relative text-l font-bold text-red-700 no-underline transition-colors duration-200 hover:text-red-500">
-            Back to dashboard
-          </Link>
         </div>
 
         {message && <div className="text-sm text-emerald-300">{message}</div>}
@@ -240,5 +237,4 @@ export default function AdminUsersPage() {
     </main>
   );
 }
-
 

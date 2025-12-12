@@ -215,13 +215,6 @@ export default function AdminDisasterTypesPage() {
               Review and update disaster records with filters and status controls.
             </p>
           </div>
-          <Link
-            href="/admin/dashboard"
-            id="disaster-back"
-            className="text-sm text-red-800 underline underline-offset-4 font-semibold opacity-0"
-          >
-            Back to dashboard
-          </Link>
         </div>
 
         {/* messages */}

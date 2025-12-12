@@ -23,7 +23,7 @@ function navConfig(pathname) {
       items: [
         { label: "Feed", href: "/user/dashboard" },
         { label: "Map", href: "/user/map" },
-        { label: "Sign out", href: "/signin" },
+        { label: "Sign out / switch", href: "/signin" },
       ],
     };
   }

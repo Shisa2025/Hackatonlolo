@@ -27,7 +27,7 @@ export default function MapView({ onPositionSelect }) {
 
   return (
     <div className="relative h-full w-full min-h-[500px]">
-      <div className="absolute left-3 top-3 z-[1000] rounded bg-white/80 px-3 py-1 text-sm text-[#A31D1D] shadow">
+      <div className="absolute left-3 top-3 z-[1000] rounded bg-white/80 px-3 py-1 text-sm text-red-700 shadow">
         Map is rendering
       </div>
       <MapContainer
@@ -47,8 +47,8 @@ export default function MapView({ onPositionSelect }) {
             center={[selectedPosition.lat, selectedPosition.lng]}
             radius={8}
             pathOptions={{
-              color: "#A31D1D",
-              fillColor: "#A31D1D",
+              color: "#b91c1c",
+              fillColor: "#b91c1c",
               fillOpacity: 0.9,
             }}
           />

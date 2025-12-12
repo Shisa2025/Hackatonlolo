@@ -83,18 +83,18 @@ export default function ReportForm({ position, onClose }) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-[#E5D0AC] bg-white p-4 shadow-lg">
+    <div className="flex h-full flex-col rounded-xl border border-red-200/70 bg-white p-4 shadow-lg">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wide text-[#6D2323]">Location</p>
-          <p className="text-sm text-[#880D1E]">
+          <p className="text-xs uppercase tracking-wide text-red-800">Location</p>
+          <p className="text-sm text-red-700">
             lat {position.lat.toFixed(5)}, lng {position.lng.toFixed(5)}
           </p>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="rounded px-2 py-1 text-sm text-[#A31D1D] hover:bg-[#CBEEF3]"
+          className="rounded px-2 py-1 text-sm text-red-700 hover:bg-amber-50"
         >
           Close
         </button>
@@ -102,9 +102,9 @@ export default function ReportForm({ position, onClose }) {
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-1 flex-col gap-3 text-sm">
         <label className="flex flex-col gap-1">
-          <span className="font-medium text-[#6D2323]">Category</span>
+          <span className="font-medium text-red-800">Category</span>
           <select
-            className="rounded border border-[#E5D0AC] px-2 py-1 focus:border-[#A31D1D] focus:outline-none"
+            className="rounded border border-red-200/70 px-2 py-1 focus:border-red-600 focus:outline-none bg-white text-red-900"
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
             required
@@ -118,9 +118,9 @@ export default function ReportForm({ position, onClose }) {
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="font-medium text-[#6D2323]">Title</span>
+          <span className="font-medium text-red-800">Title</span>
           <input
-            className="rounded border border-[#E5D0AC] px-2 py-1 focus:border-[#A31D1D] focus:outline-none"
+            className="rounded border border-red-200/70 px-2 py-1 focus:border-red-600 focus:outline-none bg-white text-red-900"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Short headline"
@@ -129,9 +129,9 @@ export default function ReportForm({ position, onClose }) {
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="font-medium text-[#6D2323]">Description</span>
+          <span className="font-medium text-red-800">Description</span>
           <textarea
-            className="min-h-[120px] rounded border border-[#E5D0AC] px-2 py-1 focus:border-[#A31D1D] focus:outline-none"
+            className="min-h-[120px] rounded border border-red-200/70 px-2 py-1 focus:border-red-600 focus:outline-none bg-white text-red-900"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What happened?"
@@ -140,9 +140,9 @@ export default function ReportForm({ position, onClose }) {
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="font-medium text-[#6D2323]">Severity</span>
+          <span className="font-medium text-red-800">Severity</span>
           <select
-            className="rounded border border-[#E5D0AC] px-2 py-1 focus:border-[#A31D1D] focus:outline-none"
+            className="rounded border border-red-200/70 px-2 py-1 focus:border-red-600 focus:outline-none bg-white text-red-900"
             value={severity}
             onChange={(e) => setSeverity(e.target.value)}
           >
@@ -157,14 +157,14 @@ export default function ReportForm({ position, onClose }) {
         <div className="mt-auto flex gap-2">
           <button
             type="submit"
-            className="rounded bg-[#A31D1D] px-4 py-2 text-white shadow hover:bg-[#880D1E]"
+            className="rounded bg-red-700 px-4 py-2 text-white shadow hover:bg-red-600"
           >
             Submit report
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="rounded border border-[#E5D0AC] px-4 py-2 text-[#A31D1D] hover:bg-[#CBEEF3]"
+            className="rounded border border-red-200/70 px-4 py-2 text-red-700 hover:bg-amber-50"
           >
             Cancel
           </button>
@@ -174,8 +174,8 @@ export default function ReportForm({ position, onClose }) {
           <div
             className={`rounded px-3 py-2 text-sm ${
               status.type === "success"
-                ? "bg-[#CBEEF3] text-[#0f5132]"
-                : "bg-[#F26A8D]/20 text-[#A31D1D]"
+                ? "bg-amber-50 text-red-800"
+                : "bg-amber-100 text-red-800"
             }`}
           >
             {status.message}
