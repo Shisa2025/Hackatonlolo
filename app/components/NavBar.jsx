@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 function navConfig(pathname) {
   if (pathname.startsWith("/admin")) {
     return {
-      brand: { label: "DisasterBuddy Admin", href: "/admin/dashboard" },
+      brand: { label: "HeadsUp Admin", href: "/admin/dashboard" },
       items: [
         { label: "Dashboard", href: "/admin/dashboard" },
         { label: "Disaster types", href: "/admin/disaster-type" },
@@ -19,7 +19,7 @@ function navConfig(pathname) {
 
   if (pathname.startsWith("/user")) {
     return {
-      brand: { label: "DisasterBuddy", href: "/user/dashboard" },
+      brand: { label: "HeadsUp", href: "/user/dashboard" },
       items: [
         { label: "Feed", href: "/user/dashboard" },
         { label: "Map", href: "/user/map" },
@@ -29,7 +29,7 @@ function navConfig(pathname) {
   }
 
   return {
-    brand: { label: "DisasterBuddy", href: "/" },
+    brand: { label: "HeadsUp", href: "/" },
     items: [
       { label: "Register", href: "/register" },
       { label: "Login", href: "/signin" },
@@ -50,8 +50,9 @@ export default function NavBar() {
   return (
     <nav className="sticky top-0 z-40 border-b border-[#E5D0AC] bg-[#FFF8E1] text-[#6D2323] shadow-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href={brand.href} className="text-lg font-semibold text-[#A31D1D] hover:underline">
-          {brand.label}
+        <Link href={brand.href} className="flex items-center gap-2 text-lg font-semibold text-[#A31D1D] hover:underline">
+          <img src="/HeadsUp.png" alt="HeadsUp logo" className="h-10 w-13 object-contain" />
+          <span>{brand.label}</span>
         </Link>
         <div className="flex items-center gap-4 text-sm">
           {items.map((item) => {

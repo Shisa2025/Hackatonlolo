@@ -109,39 +109,39 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <main className="min-h-screen bg-yellow-50 text-red-700-100 px-6 py-10 flex justify-center">
+    <main className="min-h-screen bg-yellow-50 text-red-900 px-6 py-10 flex justify-center">
       <div className="w-full max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-l font-bold uppercase tracking-[0.2em] text-red-700">Admin</div>
+            <div className="text-l font-bold uppercase tracking-[0.2em] text-red-800">Admin</div>
             <h1 className="text-3xl font-bold tracking-tight text-red-700">User management</h1>
-            <p className="text-red-700 font-bold text-l">Review users and resolve pending accounts.</p>
+            <p className="text-red-800 font-semibold text-l">Review users and resolve pending accounts.</p>
           </div>
         </div>
 
-        {message && <div className="text-sm text-emerald-300">{message}</div>}
-        {error && <div className="text-sm text-red-300">{error}</div>}
+        {message && <div className="text-sm text-emerald-700">{message}</div>}
+        {error && <div className="text-sm text-red-700">{error}</div>}
 
-        <div className="rounded-2xl border border-white/10 bg-red-700 p-5 shadow-xl space-y-3">
+        <div className="rounded-2xl border border-red-200/70 bg-white p-5 shadow-md space-y-3">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold">Users</div>
-            {loading && <div className="text-xs text-red-700">Loading...</div>}
+            <div className="text-sm font-semibold text-red-800">Users</div>
+            {loading && <div className="text-xs text-red-800">Loading...</div>}
           </div>
-          {!loading && users.length === 0 && <div className="text-sm text-red-700">No users found.</div>}
+          {!loading && users.length === 0 && <div className="text-sm text-red-800">No users found.</div>}
           {!loading && users.length > 0 && (
             <div className="space-y-2 text-sm">
               {users.map((u) => (
                 <div
                   key={u.id}
-                  className="rounded-lg border border-white/20 bg-red-700 px-3 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                  className="rounded-lg border border-red-200/70 bg-amber-50 px-3 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
                 >
                   <div>
-                    <div className="font-semibold">{u.email}</div>
-                    <div className="text-gray-400">
+                    <div className="font-semibold text-red-900">{u.email}</div>
+                    <div className="text-red-800">
                       Role: {u.role} - Status: {STATUS_LABEL[u.account_status] ?? u.account_status}
                     </div>
-                    {u.user_name && <div className="text-gray-400 text-xs">Username: {u.user_name}</div>}
-                    <div className="text-gray-400 text-xs">Created: {formatDate(u.created_at)}</div>
+                    {u.user_name && <div className="text-red-800 text-xs">Username: {u.user_name}</div>}
+                    <div className="text-red-800 text-xs">Created: {formatDate(u.created_at)}</div>
                   </div>
                   <div className="flex gap-2">
                     {u.account_status !== 'banned' && (
@@ -149,7 +149,7 @@ export default function AdminUsersPage() {
                         type="button"
                         disabled={updatingId === u.id}
                         onClick={() => setStatus(u.id, 'banned')}
-                        className="px-3 py-2 rounded-lg border border-red-300/50 text-red-200 hover:border-red-200 disabled:opacity-60"
+                        className="px-3 py-2 rounded-lg border border-red-300 text-red-700 bg-white hover:bg-red-50 disabled:opacity-60"
                       >
                         {updatingId === u.id ? 'Updating...' : 'Set banned'}
                       </button>
@@ -159,7 +159,7 @@ export default function AdminUsersPage() {
                         type="button"
                         disabled={updatingId === u.id}
                         onClick={() => setStatus(u.id, 'active')}
-                        className="px-3 py-2 rounded-lg border border-emerald-300/50 text-emerald-200 hover:border-emerald-200 disabled:opacity-60"
+                        className="px-3 py-2 rounded-lg border border-red-300 text-red-700 bg-white hover:bg-red-50 disabled:opacity-60"
                       >
                         {updatingId === u.id ? 'Updating...' : 'Activate'}
                       </button>
@@ -168,7 +168,7 @@ export default function AdminUsersPage() {
                       <button
                         type="button"
                         onClick={() => loadFakeDisasters(u.id)}
-                        className="px-3 py-2 rounded-lg border border-amber-300/50 text-amber-100 hover:border-amber-200"
+                        className="px-3 py-2 rounded-lg border border-red-300 text-red-700 bg-white hover:bg-red-50"
                       >
                         View fake reports
                       </button>
@@ -178,7 +178,7 @@ export default function AdminUsersPage() {
                         type="button"
                         disabled={updatingId === u.id}
                         onClick={() => setStatus(u.id, 'active')}
-                        className="px-3 py-2 rounded-lg border border-emerald-300/50 text-emerald-200 hover:border-emerald-200 disabled:opacity-60"
+                        className="px-3 py-2 rounded-lg border border-red-300 text-red-700 bg-white hover:bg-red-50 disabled:opacity-60"
                       >
                         {updatingId === u.id ? 'Updating...' : 'Unban (active)'}
                       </button>
@@ -190,43 +190,43 @@ export default function AdminUsersPage() {
           )}
         </div>
         {fakeDetails.userId && (
-          <div className="rounded-2xl border border-white/10 bg-red-800/60 p-4 shadow-xl space-y-3">
+          <div className="rounded-2xl border border-red-200/70 bg-white p-4 shadow-md space-y-3">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-semibold">
+              <div className="text-sm font-semibold text-red-800">
                 Fake disasters reported by user #{fakeDetails.userId}
               </div>
               <button
                 type="button"
                 onClick={() => setFakeDetails({ userId: null, items: [], error: '', loading: false })}
-                className="text-xs text-red-200 hover:text-white"
+                className="text-xs text-red-700 hover:text-red-600"
               >
                 Close
               </button>
             </div>
             {fakeDetails.loading ? (
-              <div className="text-sm text-red-200">Loading...</div>
+              <div className="text-sm text-red-800">Loading...</div>
             ) : fakeDetails.error ? (
-              <div className="text-sm text-red-200">{fakeDetails.error}</div>
+              <div className="text-sm text-red-800">{fakeDetails.error}</div>
             ) : fakeDetails.items.length === 0 ? (
-              <div className="text-sm text-red-200">No fake disasters found.</div>
+              <div className="text-sm text-red-800">No fake disasters found.</div>
             ) : (
               <div className="space-y-2 text-sm">
                 {fakeDetails.items.map((d) => (
-                  <div key={d.id} className="rounded-lg border border-white/15 bg-red-900/50 px-3 py-2 flex justify-between gap-3">
+                  <div key={d.id} className="rounded-lg border border-red-200/70 bg-amber-50 px-3 py-2 flex justify-between gap-3">
                     <div>
-                      <div className="font-semibold text-white flex items-center gap-2">
-                        <span className="text-xs uppercase tracking-[0.16em] text-red-200">{d.disaster_type_name || 'Disaster'}</span>
+                      <div className="font-semibold text-red-800 flex items-center gap-2">
+                        <span className="text-xs uppercase tracking-[0.16em] text-red-700">{d.disaster_type_name || 'Disaster'}</span>
                         {d.title}
                       </div>
-                      <div className="text-red-200 text-xs">
+                      <div className="text-red-800 text-xs">
                         Severity: {d.severity} • {d.lat && d.lng ? `${d.lat.toFixed(3)}, ${d.lng.toFixed(3)}` : 'No coords'}
                       </div>
-                      <div className="text-red-200 text-xs">
+                      <div className="text-red-800 text-xs">
                         {formatDateLocal(d.occurred_at || d.created_at)}
                       </div>
-                      {d.description && <div className="text-red-100 text-xs mt-1">{d.description}</div>}
+                      {d.description && <div className="text-red-800 text-xs mt-1">{d.description}</div>}
                     </div>
-                    <div className="text-red-200 text-xs">Status: {d.status}</div>
+                    <div className="text-red-800 text-xs">Status: {d.status}</div>
                   </div>
                 ))}
               </div>
@@ -237,4 +237,3 @@ export default function AdminUsersPage() {
     </main>
   );
 }
-
